@@ -124,7 +124,7 @@ const App: React.FC = () => {
                 <Cursor />
                 <div 
                     ref={scrollContainerRef}
-                    className="relative h-full w-full border-yellow-400 border-2 rounded-[40px] overflow-y-auto overflow-x-hidden"
+                    className="relative h-full w-full border-yellow-400 border-2 rounded-[40px] overflow-y-auto overflow-x-hidden hide-scrollbar"
                 >
                     <div 
                       className="absolute bottom-0 left-0 right-0 h-1/2 z-0"
