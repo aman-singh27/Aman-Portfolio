@@ -152,6 +152,7 @@ const App: React.FC = () => {
                 pointerEvents: heroOpacity > 0 ? "auto" : "none",
               }}
             >
+<<<<<<< HEAD
               <div
                 className="text-center transition-transform duration-300 ease-out relative"
                 style={{
@@ -169,6 +170,12 @@ const App: React.FC = () => {
                 <h1
                   className="font-anton text-[180px] leading-none text-yellow-400 relative z-0"
                   style={{ textShadow: "4px 4px 0 #000" }}
+=======
+                <Cursor />
+                <div 
+                    ref={scrollContainerRef}
+                    className="relative h-full w-full border-yellow-400 border-2 rounded-[40px] overflow-y-auto overflow-x-hidden hide-scrollbar"
+>>>>>>> 813ab83d04667918a4341e502ecfd41aa6dc1d42
                 >
                   AMAN SINGH
                 </h1>
