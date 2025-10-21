@@ -7,10 +7,10 @@ const projects = [
     { id: '04', title: 'PROJECT FOUR', category: 'UI/UX' },
 ];
 
-const Work: React.FC = () => {
+const Projects: React.FC = () => {
     return (
-        <div className="w-full max-w-5xl mx-auto py-20">
-             <h2 className="text-sm font-medium tracking-[0.3em] text-gray-400 mb-12 text-center">SELECTED WORK</h2>
+        <div className="w-full max-w-5xl mx-auto py-20 px-4">
+             <h2 className="text-sm font-medium tracking-[0.3em] text-gray-400 mb-12 text-center">PROJECTS</h2>
             <div className="space-y-4">
                 {projects.map(project => (
                     <div 
@@ -29,4 +29,4 @@ const Work: React.FC = () => {
     );
 }
 
-export default Work;
+export default Projects;
