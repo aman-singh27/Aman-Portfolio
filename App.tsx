@@ -107,6 +107,12 @@ const App: React.FC = () => {
     const workOpacity = Math.min(1, workProgress);
     const workY = Math.max(0, 50 - workProgress * 50);
 
+    // Animate border. Fades out, scales up, and moves down as user starts scrolling.
+    const borderProgress = Math.min(1, scrollProgress / 0.1); // Animation completes over first 10% of scroll
+    const borderOpacity = 1 - borderProgress;
+    const borderScale = 1 + borderProgress * 0.2; // Scales up by 20%
+    const borderY = borderProgress * 50; // Moves down 50px
+
     return (
         <main className="h-screen w-screen bg-black text-white overflow-hidden p-8">
             <IntroAnimation animationStage={animationStage} />
@@ -120,81 +126,93 @@ const App: React.FC = () => {
                 }}
             >
                 <Cursor />
-                <div 
-                    ref={scrollContainerRef}
-                    className="relative h-full w-full border-yellow-400 border-2 rounded-[40px] overflow-y-auto overflow-x-hidden hide-scrollbar"
-                >
-                    <div 
-                      className="absolute bottom-0 left-0 right-0 h-1/2 z-0"
-                      style={{
-                        backgroundImage: 'radial-gradient(circle at center, rgba(100, 100, 100, 0.2) 1px, transparent 1px)',
-                        backgroundSize: '1.2rem 1.2rem',
-                        maskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
-                      }}
+                <div className="relative w-full h-full">
+                    {/* Animated Border */}
+                    <div
+                        className="absolute inset-0 border-2 border-yellow-400 rounded-[40px] pointer-events-none"
+                        style={{
+                            opacity: borderOpacity,
+                            transform: `translateY(${borderY}px) scale(${borderScale})`,
+                            willChange: 'transform, opacity',
+                        }}
                     />
 
-                    <Header />
-                    <p className="absolute top-[7rem] left-1/2 -translate-x-1/2 text-center text-xs uppercase text-gray-400 tracking-[0.2em] w-full max-w-4xl z-10 leading-relaxed">
-                        I CREATE VIBRANT AND COLORFUL DIGITAL EXPERIENCES THAT ARE
-                        <br />
-                        AS PRACTICAL AS THEY ARE IMPACTFUL.
-                    </p>
-                    <Footer />
-                    <Ruler />
+                    <div 
+                        ref={scrollContainerRef}
+                        className="relative h-full w-full rounded-[40px] overflow-y-auto overflow-x-hidden hide-scrollbar"
+                    >
+                        <div 
+                          className="absolute bottom-0 left-0 right-0 h-1/2 z-0"
+                          style={{
+                            backgroundImage: 'radial-gradient(circle at center, rgba(100, 100, 100, 0.2) 1px, transparent 1px)',
+                            backgroundSize: '1.2rem 1.2rem',
+                            maskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
+                            WebkitMaskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
+                          }}
+                        />
 
-                    <div className="relative w-full">
-                        <section 
-                            className="h-screen sticky top-0 flex flex-col justify-center items-center"
-                            style={{ opacity: heroOpacity, pointerEvents: heroOpacity > 0 ? 'auto' : 'none' }}
-                        >
-                            <div 
-                                className="text-center transition-transform duration-300 ease-out relative" 
-                                style={{ 
-                                    transform: `translateY(${heroY}px) scale(${heroScale})`,
-                                }}
+                        <Header />
+                        <p className="absolute top-[7rem] left-1/2 -translate-x-1/2 text-center text-xs uppercase text-gray-400 tracking-[0.2em] w-full max-w-4xl z-10 leading-relaxed">
+                            I CREATE VIBRANT AND COLORFUL DIGITAL EXPERIENCES THAT ARE
+                            <br />
+                            AS PRACTICAL AS THEY ARE IMPACTFUL.
+                        </p>
+                        <Footer />
+                        <Ruler />
+
+                        <div className="relative w-full">
+                            <section 
+                                className="h-screen sticky top-0 flex flex-col justify-center items-center"
+                                style={{ opacity: heroOpacity, pointerEvents: heroOpacity > 0 ? 'auto' : 'none' }}
                             >
-                                <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
-                                <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
-                                    AMAN SINGH
-                                </h1>
-                                 {/* this is sphere positio */}
-                                 <div 
-                                    className="absolute left-1/2 -translate-x-1/2 bottom-[-350px] translate-y-1/2 pointer-events-none z-10"
+                                <div 
+                                    className="text-center transition-transform duration-300 ease-out relative" 
+                                    style={{ 
+                                        transform: `translateY(${heroY}px) scale(${heroScale})`,
+                                    }}
                                 >
-                                    <Globe width={1000} height={1000} />
+                                    <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
+                                    <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
+                                        AMAN SINGH
+                                    </h1>
+                                     {/* this is sphere positio */}
+                                     <div 
+                                        className="absolute left-1/2 -translate-x-1/2 bottom-[-350px] translate-y-1/2 pointer-events-none z-10"
+                                    >
+                                        <Globe width={1000} height={1000} />
+                                    </div>
+                                    <a 
+                                        href="#content-start" 
+                                        className="cursor-pointer absolute bottom-[-100px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white opacity-80 hover:opacity-100 transition-opacity z-20"
+                                    >
+                                        <span className="text-sm tracking-widest">SCROLL</span>
+                                        <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 1V23M8 23L1 16M8 23L15 16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </a>
                                 </div>
-                                <a 
-                                    href="#content-start" 
-                                    className="cursor-pointer absolute bottom-[-100px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white opacity-80 hover:opacity-100 transition-opacity z-20"
-                                >
-                                    <span className="text-sm tracking-widest">SCROLL</span>
-                                    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8 1V23M8 23L1 16M8 23L15 16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </section>
-                        
-                        <section 
-                            id="content-start"
-                            className="relative z-10 bg-black"
-                        >
-                             <div 
-                                className="w-full transition-all duration-500 ease-out" 
-                                style={{ 
-                                    opacity: workOpacity,
-                                    transform: `translateY(${workY}vh)`
-                                }}
+                            </section>
+                            
+                            <section 
+                                id="content-start"
+                                className="relative z-10 bg-black"
                             >
-                                <About />
-                                <Experience />
-                                <Education />
-                                <Skills />
-                                <Projects />
-                                <Certificates />
-                             </div>
-                        </section>
+                                 <div 
+                                    className="w-full transition-all duration-500 ease-out" 
+                                    style={{ 
+                                        opacity: workOpacity,
+                                        transform: `translateY(${workY}vh)`
+                                    }}
+                                >
+                                    <About scrollContainerRef={scrollContainerRef} />
+                                    <Experience />
+                                    <Education />
+                                    <Skills />
+                                    <Projects />
+                                    <Certificates />
+                                 </div>
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>
