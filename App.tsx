@@ -135,6 +135,11 @@ const App: React.FC = () => {
                     />
 
                     <Header />
+                    <p className="absolute top-[7rem] left-1/2 -translate-x-1/2 text-center text-xs uppercase text-gray-400 tracking-[0.2em] w-full max-w-4xl z-10 leading-relaxed">
+                        I CREATE VIBRANT AND COLORFUL DIGITAL EXPERIENCES THAT ARE
+                        <br />
+                        AS PRACTICAL AS THEY ARE IMPACTFUL.
+                    </p>
                     <Footer />
                     <Ruler />
 
@@ -149,18 +154,13 @@ const App: React.FC = () => {
                                     transform: `translateY(${heroY}px) scale(${heroScale})`,
                                 }}
                             >
-                                <p className="text-gray-300 tracking-[0.2em] mb-4 relative z-20">
-                                    I CREATE VIBRANT AND COLORFUL DIGITAL EXPERIENCES THAT ARE
-                                    <br />
-                                    AS PRACTICAL AS THEY ARE IMPACTFUL.
-                                </p>
                                 <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
                                 <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
                                     AMAN SINGH
                                 </h1>
                                  {/* this is sphere positio */}
                                  <div 
-                                    className="absolute left-1/2 -translate-x-1/2 bottom-[-200px] translate-y-1/2 pointer-events-none z-10"
+                                    className="absolute left-1/2 -translate-x-1/2 bottom-[-350px] translate-y-1/2 pointer-events-none z-10"
                                 >
                                     <Globe width={1000} height={1000} />
                                 </div>

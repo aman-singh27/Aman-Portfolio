@@ -10,7 +10,8 @@ const Ruler: React.FC = () => {
     return (
         <svg
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[1050px] h-[525px] overflow-visible"
-            style={{ top: '3.5rem' }}
+            // change ruler posotion
+            style={{ top: '9.5rem' }}
             viewBox="0 0 1050 525"
         >
             <defs>
