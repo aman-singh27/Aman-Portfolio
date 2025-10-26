@@ -155,13 +155,14 @@ const App: React.FC = () => {
                                     AS PRACTICAL AS THEY ARE IMPACTFUL.
                                 </p>
                                 <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
-                                <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000' }}>
-                                    DIGITAL DESIGNER
+                                <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
+                                    AMAN SINGH
                                 </h1>
+                                 {/* this is sphere positio */}
                                  <div 
-                                    className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 pointer-events-none z-10"
+                                    className="absolute left-1/2 -translate-x-1/2 bottom-[-200px] translate-y-1/2 pointer-events-none z-10"
                                 >
-                                    <Globe width={700} height={700} />
+                                    <Globe width={1000} height={1000} />
                                 </div>
                                 <a 
                                     href="#content-start" 
