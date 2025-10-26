@@ -3,7 +3,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Globe from './components/Globe';
 import Ruler from './components/Ruler';
-import Preloader from './components/Preloader';
 import Cursor from './components/Cursor';
 import Projects from './components/Work';
 import IntroAnimation from './components/IntroAnimation';
@@ -14,7 +13,6 @@ import Skills from './components/Skills';
 import Certificates from './components/Certificates';
 
 const App: React.FC = () => {
-    const [loading, setLoading] = useState(true);
     const [scrollProgress, setScrollProgress] = useState(0);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -25,8 +23,6 @@ const App: React.FC = () => {
     const [animationStage, setAnimationStage] = useState(0);
 
     useEffect(() => {
-        if (loading) return; // Don't run animation logic while preloader is active
-
         const numberOfBars = 8;
 
         // Stage 1: Start vertical bars sliding up after a short delay
@@ -47,7 +43,7 @@ const App: React.FC = () => {
             clearTimeout(barsSlideUpTimeout);
             clearTimeout(contentRevealTimeout);
         };
-    }, [loading]);
+    }, []);
 
     const handleScroll = () => {
         if (scrollContainerRef.current) {
@@ -60,11 +56,11 @@ const App: React.FC = () => {
 
      useEffect(() => {
         const container = scrollContainerRef.current;
-        if (!loading && container) {
+        if (container) {
             container.addEventListener('scroll', handleScroll, { passive: true });
             return () => container.removeEventListener('scroll', handleScroll);
         }
-    }, [loading]);
+    }, []);
 
     // Effect for smooth scrolling on anchor links
     useEffect(() => {
@@ -97,12 +93,8 @@ const App: React.FC = () => {
         return () => {
             document.removeEventListener('click', handleSmoothScroll);
         };
-    }, [loading]);
+    }, []);
 
-
-    if (loading) {
-        return <Preloader onLoaded={() => setLoading(false)} />;
-    }
     
     // Animate hero section based on scroll.
     const heroProgress = scrollProgress / 0.15; // Hero fades out faster
@@ -122,7 +114,8 @@ const App: React.FC = () => {
                 className="w-full h-full"
                 style={{
                     opacity: animationStage === 2 ? 1 : 0,
-                    transition: 'opacity 0.6s ease-in',
+                    transform: animationStage === 2 ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
                     transitionDelay: animationStage === 2 ? '0.2s' : '0s',
                 }}
             >
