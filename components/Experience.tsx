@@ -18,15 +18,15 @@ const experience = [
 const Experience: React.FC = () => {
     return (
         <div className="w-full max-w-5xl mx-auto py-20 px-4">
-             <h2 className="text-sm font-medium tracking-[0.3em] text-gray-400 mb-12 text-center">EXPERIENCE</h2>
-            <div className="border-l-2 border-gray-700 pl-8 space-y-12">
+             <h2 className="text-sm font-medium tracking-[0.3em] text-black/70 mb-12 text-center">EXPERIENCE</h2>
+            <div className="border-l-2 border-black/50 pl-8 space-y-12">
                 {experience.map((job, index) => (
                      <div key={index} className="relative">
-                        <div className="absolute -left-10 w-4 h-4 bg-yellow-400 rounded-full border-4 border-black top-1"></div>
-                        <p className="text-sm text-gray-400 mb-1">{job.date}</p>
-                        <h3 className="text-2xl font-bold">{job.role}</h3>
-                        <p className="text-yellow-400 text-lg mb-2">{job.company}</p>
-                        <p className="text-gray-300">{job.description}</p>
+                        <div className="absolute -left-10 w-4 h-4 bg-black rounded-full border-4 border-white top-1"></div>
+                        <p className="text-sm text-black/70 mb-1">{job.date}</p>
+                        <h3 className="text-2xl font-bold text-black">{job.role}</h3>
+                        <p className="text-black/80 text-lg mb-2">{job.company}</p>
+                        <p className="text-black">{job.description}</p>
                     </div>
                 ))}
             </div>

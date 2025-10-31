@@ -1,11 +1,28 @@
 
+
 import React from 'react';
 
-const Ruler: React.FC = () => {
+// Fix: Add props interface to accept scrollProgress
+interface RulerProps {
+    scrollProgress: number;
+}
+
+// Fix: Update component to accept and use scrollProgress prop
+const Ruler: React.FC<RulerProps> = ({ scrollProgress }) => {
     const radius = 500;
     const numTicks = 13;
     const angleStep = 180 / (numTicks + 3); 
     const startAngle = -100;
+
+    // Calculate the position of the scroll progress indicator
+    const totalAngleSpan = (numTicks - 1) * angleStep;
+    const indicatorAngle = startAngle + scrollProgress * totalAngleSpan;
+
+    const indicatorX1 = 525 + radius * Math.cos((indicatorAngle * Math.PI) / 180);
+    const indicatorY1 = 525 + radius * Math.sin((indicatorAngle * Math.PI) / 180);
+    const indicatorX2 = 525 + (radius - 25) * Math.cos((indicatorAngle * Math.PI) / 180);
+    const indicatorY2 = 525 + (radius - 25) * Math.sin((indicatorAngle * Math.PI) / 180);
+
 
     return (
         <svg
@@ -61,6 +78,18 @@ const Ruler: React.FC = () => {
                     </g>
                 );
             })}
+            
+            {/* Add a moving indicator based on scroll progress */}
+            <line
+                x1={indicatorX1}
+                y1={indicatorY1}
+                x2={indicatorX2}
+                y2={indicatorY2}
+                stroke="#FBBF24"
+                strokeWidth="3"
+                strokeLinecap="round"
+                style={{ transition: 'all 100ms linear' }}
+            />
         </svg>
     );
 };

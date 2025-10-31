@@ -4,13 +4,15 @@ import Footer from './components/Footer';
 import Globe from './components/Globe';
 import Ruler from './components/Ruler';
 import Cursor from './components/Cursor';
-import Projects from './components/Work';
 import IntroAnimation from './components/IntroAnimation';
 import About from './components/About';
 import Experience from './components/Experience';
 import Education from './components/Education';
 import Skills from './components/Skills';
 import Certificates from './components/Certificates';
+import ProjectsHeading from './components/ProjectsHeading';
+import SectionDifferentiator from './components/SectionDifferentiator';
+import Projects from './components/projects';
 
 const App: React.FC = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -97,13 +99,13 @@ const App: React.FC = () => {
 
     
     // Animate hero section based on scroll.
-    const heroProgress = scrollProgress / 0.15; // Hero fades out faster
-    const heroOpacity = Math.max(0, 1 - heroProgress * 1.5);
-    const heroScale = Math.max(0.8, 1 - heroProgress * 0.2);
+    const heroProgress = scrollProgress / 0.15; // Animate over first 15% of scroll
+    const heroOpacity = Math.max(0, 1 - heroProgress * 2);
+    const heroScale = Math.max(0.8, 1 - heroProgress * 0.15);
     const heroY = -heroProgress * 100;
 
     // Animate work section. Starts appearing as hero fades.
-    const workProgress = Math.max(0, (scrollProgress - 0.05)) / 0.2;
+    const workProgress = Math.max(0, scrollProgress / 0.20);
     const workOpacity = Math.min(1, workProgress);
     const workY = Math.max(0, 50 - workProgress * 50);
 
@@ -158,7 +160,7 @@ const App: React.FC = () => {
                             AS PRACTICAL AS THEY ARE IMPACTFUL.
                         </p>
                         <Footer />
-                        <Ruler />
+                        <Ruler scrollProgress={scrollProgress} />
 
                         <div className="relative w-full">
                             <section 
@@ -195,21 +197,29 @@ const App: React.FC = () => {
                             
                             <section 
                                 id="content-start"
-                                className="relative z-10 bg-black"
+                                className="relative z-10"
                             >
                                  <div 
-                                    className="w-full transition-all duration-500 ease-out" 
+                                    className="w-full" 
                                     style={{ 
                                         opacity: workOpacity,
                                         transform: `translateY(${workY}vh)`
                                     }}
-                                >
+                                 >
                                     <About scrollContainerRef={scrollContainerRef} />
-                                    <Experience />
-                                    <Education />
-                                    <Skills />
-                                    <Projects />
-                                    <Certificates />
+                                    <SectionDifferentiator scrollContainerRef={scrollContainerRef} />
+                                    <div className="bg-white text-black">
+                                        <div className="bg-yellow-400 relative">
+                                            <div className="absolute top-[40px] left-[40px] right-[40px] bottom-0 border-x-[2px] border-t-[2px] border-black rounded-t-[40px] pointer-events-none z-10" />
+                                            <ProjectsHeading scrollContainerRef={scrollContainerRef} />
+                                            <Projects scrollContainerRef={scrollContainerRef} />
+                                        </div>
+                                        <Experience />
+                                        <Education />
+                                        <Skills />
+                                        
+                                        <Certificates />
+                                    </div>
                                  </div>
                             </section>
                         </div>
