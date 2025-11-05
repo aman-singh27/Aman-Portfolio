@@ -10,7 +10,6 @@ import Experience from './components/Experience';
 import Education from './components/Education';
 import Skills from './components/Skills';
 import Certificates from './components/Certificates';
-import ProjectsHeading from './components/ProjectsHeading';
 import SectionDifferentiator from './components/SectionDifferentiator';
 import Projects from './components/projects';
 
@@ -174,7 +173,7 @@ const App: React.FC = () => {
                                     }}
                                 >
                                     <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
-                                    <h1 className="font-anton text-[180px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
+                                    <h1 className="font-anton text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
                                         AMAN SINGH
                                     </h1>
                                      {/* this is sphere positio */}
@@ -211,7 +210,6 @@ const App: React.FC = () => {
                                     <div className="bg-white text-black">
                                         <div className="bg-yellow-400 relative">
                                             <div className="absolute top-[40px] left-[40px] right-[40px] bottom-0 border-x-[2px] border-t-[2px] border-black rounded-t-[40px] pointer-events-none z-10" />
-                                            <ProjectsHeading scrollContainerRef={scrollContainerRef} />
                                             <Projects scrollContainerRef={scrollContainerRef} />
                                         </div>
                                         <Experience />

@@ -46,7 +46,7 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
 
   return (
     <section 
-      className="w-full h-[150vh] relative" // Adjusted height for scroll animation
+      className="w-full h-[200vh] relative" // Adjusted height for scroll animation
       ref={sectionRef}
     >
       <div 

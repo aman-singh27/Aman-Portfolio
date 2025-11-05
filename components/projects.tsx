@@ -39,10 +39,14 @@ const ProductDesignGraphic = () => (
         <path
           d="M 2 2 h 16 v 16 H 2 z"
           fill="none"
-          stroke="rgba(255, 255, 255, 0.1)"
+          stroke="rgba(250, 204, 21, 0.15)"
           strokeWidth="1"
         />
       </pattern>
+      <linearGradient id="productGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="rgb(250 204 21)" stopOpacity="0.3" />
+        <stop offset="100%" stopColor="rgb(250 204 21)" stopOpacity="0" />
+      </linearGradient>
     </defs>
     <rect width="200" height="100" fill="url(#productGrid)" />
     <rect
@@ -50,9 +54,9 @@ const ProductDesignGraphic = () => (
       y="20"
       width="100"
       height="100"
-      rx="10"
-      fill="none"
-      stroke="white"
+      rx="15"
+      fill="url(#productGlow)"
+      stroke="rgb(250 204 21)"
       strokeWidth="2"
       transform="rotate(15 80 70)"
     />
@@ -61,10 +65,11 @@ const ProductDesignGraphic = () => (
       y="40"
       width="100"
       height="100"
-      rx="10"
+      rx="15"
       fill="none"
-      stroke="rgb(250 204 21)"
+      stroke="rgba(250, 204, 21, 0.5)"
       strokeWidth="2"
+      strokeDasharray="5,5"
       transform="rotate(5 100 90)"
     />
   </svg>
@@ -79,10 +84,17 @@ const WebDesignGraphic = () => (
     className="absolute bottom-0 left-0 w-full h-full"
     aria-hidden="true"
   >
-    <circle cx="100" cy="150" r="100" stroke="rgba(255,255,255,0.1)" strokeWidth="2" fill="none" />
-    <circle cx="100" cy="150" r="80" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="none" />
-    <circle cx="100" cy="150" r="60" stroke="white" strokeWidth="2" fill="none" />
-    <circle cx="170" cy="40" r="20" fill="rgb(250 204 21)" />
+    <defs>
+      <radialGradient id="webGlow">
+        <stop offset="0%" stopColor="rgb(250 204 21)" stopOpacity="0.4" />
+        <stop offset="100%" stopColor="rgb(250 204 21)" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="150" r="100" stroke="rgba(250,204,21,0.1)" strokeWidth="2" fill="none" />
+    <circle cx="100" cy="150" r="80" stroke="rgba(250,204,21,0.2)" strokeWidth="2" fill="none" />
+    <circle cx="100" cy="150" r="60" stroke="rgb(250 204 21)" strokeWidth="3" fill="none" />
+    <circle cx="170" cy="40" r="25" fill="url(#webGlow)" />
+    <circle cx="170" cy="40" r="15" fill="rgb(250 204 21)" />
   </svg>
 );
 
@@ -102,8 +114,8 @@ const WebflowGraphic = () => (
         height="20"
         patternUnits="userSpaceOnUse"
       >
-        <rect width="10" height="10" fill="white" />
-        <rect x="10" y="10" width="10" height="10" fill="white" />
+        <rect width="10" height="10" fill="rgba(250, 204, 21, 0.1)" />
+        <rect x="10" y="10" width="10" height="10" fill="rgba(250, 204, 21, 0.1)" />
       </pattern>
     </defs>
     <rect
@@ -112,13 +124,14 @@ const WebflowGraphic = () => (
       width="100"
       height="100"
       fill="url(#webflowChecker)"
-      opacity="0.8"
+      opacity="0.6"
     />
-    <circle cx="50" cy="50" r="40" stroke="rgb(250 204 21)" strokeWidth="2" fill="none" />
+    <circle cx="50" cy="50" r="40" stroke="rgb(250 204 21)" strokeWidth="3" fill="none" />
+    <circle cx="50" cy="50" r="30" stroke="rgba(250 204 21, 0.5)" strokeWidth="2" fill="none" />
     <path
       d="M 10 50 Q 50 10, 90 50 Q 50 90, 10 50 z"
-      stroke="white"
-      strokeWidth="1"
+      stroke="rgba(250, 204, 21, 0.6)"
+      strokeWidth="2"
       fill="none"
     />
   </svg>
@@ -155,88 +168,65 @@ const projects = [
 // --- Project Card Component ---
 interface ProjectCardProps {
   project: (typeof projects)[0];
-  rotation: string;
-  translation: string;
-  zIndex: string;
-  index: number;
   isVisible: boolean;
-  isExiting: boolean;
+  delay: number;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
-  rotation,
-  translation,
-  zIndex,
-  index,
   isVisible,
-  isExiting,
+  delay,
 }) => {
-  const [wiggle, setWiggle] = useState(0);
-
-  useEffect(() => {
-    if (!isVisible || isExiting) return;
-
-    const wiggleInterval = setInterval(() => {
-      setWiggle(Math.sin(Date.now() / 800 + index) * 2);
-    }, 50);
-
-    return () => clearInterval(wiggleInterval);
-  }, [isVisible, isExiting, index]);
-
-  const getAnimationStyle = () => {
-    if (isExiting) {
-      const reverseDelay = (2 - index) * 200;
-      return {
-        animation: `floatOut 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) ${reverseDelay}ms forwards`,
-      };
-    }
-    if (isVisible) {
-      const delay = index * 200;
-      return {
-        animation: `floatIn 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms forwards`,
-      };
-    }
-    return { opacity: 0, transform: 'translateY(120px)' };
-  };
-
   return (
     <div
-      className={`absolute w-72 h-[480px] sm:w-80 sm:h-[500px] transition-all duration-500 ease-out transform-gpu
-                  ${zIndex}
-                  hover:!rotate-0 hover:!scale-105 hover:!z-50 hover:!-translate-y-4`}
+      className="transition-all duration-1000 ease-out transform-gpu hover:scale-105 hover:z-50"
       style={{
-        ...getAnimationStyle(),
-        transform: `${rotation} ${translation} translateY(${wiggle}px)`,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(80px)',
+        transitionDelay: isVisible ? `${delay}ms` : '0ms',
       }}
     >
-      <div className="w-full h-full bg-black rounded-[40px] border border-gray-800 shadow-2xl overflow-hidden flex flex-col">
-        <div className="p-6 sm:p-8 flex-grow flex flex-col justify-between z-10">
+      <div className="w-96 h-[580px] bg-black rounded-[40px] border-2 border-gray-800 shadow-2xl overflow-hidden flex flex-col relative group">
+        {/* Glow effect on hover */}
+        <div className="absolute inset-0 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-transparent to-yellow-400/10 rounded-[40px]"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="p-8 flex-grow flex flex-col justify-between z-10 relative">
           <div>
-            <span className="inline-block px-3 py-1 bg-gray-800 text-white text-[10px] sm:text-xs font-semibold rounded-full uppercase tracking-wider">
+            <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-gray-800 to-gray-900 text-yellow-400 text-[10px] font-bold rounded-full uppercase tracking-widest border border-gray-700">
               {project.tag}
             </span>
-            <h3 className="text-white text-2xl sm:text-3xl font-bold mt-4">
+            <h3 className="text-white text-3xl font-bold mt-5 tracking-tight">
               {project.title}
             </h3>
-            <p className="text-gray-400 text-sm sm:text-base mt-2">
+            <p className="text-gray-400 text-base mt-3 leading-relaxed">
               {project.description}
             </p>
           </div>
 
           <a
             href={project.link}
-            className="group mt-6 inline-flex items-center justify-between w-full bg-yellow-400 text-black font-bold py-3 px-5 rounded-xl transition-all duration-300 hover:bg-yellow-300 transform hover:scale-105"
+            className="group/btn mt-6 inline-flex items-center justify-between w-full bg-yellow-400 text-black font-bold py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/50 transform hover:scale-105"
           >
-            <span>VIEW</span>
-            <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            <span className="text-sm tracking-wide">VIEW PROJECT</span>
+            <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover/btn:translate-x-2" />
           </a>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full h-1/2 opacity-30 z-0">
+        {/* Background graphic */}
+        <div className="absolute bottom-0 left-0 w-full h-1/2 opacity-20 z-0">
           {project.graphic}
         </div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/5 to-transparent rounded-[40px] z-0"></div>
+        
+        {/* Subtle gradient overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/[0.03] via-transparent to-black/20 rounded-[40px] z-0 pointer-events-none"></div>
+        
+        {/* Border glow */}
+        <div className="absolute inset-0 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div className="absolute inset-0 rounded-[40px] border-2 border-yellow-400/30"></div>
+        </div>
       </div>
     </div>
   );
@@ -248,115 +238,202 @@ interface ProjectsProps {
 }
 
 const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingSectionRef = useRef<HTMLDivElement>(null);
+  const cardsSectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isCardsVisible, setIsCardsVisible] = useState(false);
 
+  // Heading scroll animation
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      if (!headingSectionRef.current) return;
+      const rect = headingSectionRef.current.getBoundingClientRect();
+      const viewportHeight = container.clientHeight;
+
+      const start = rect.top + container.scrollTop;
+      const end = start + headingSectionRef.current.offsetHeight - viewportHeight;
+      const current = container.scrollTop;
+
+      let progress = 0;
+      if (current >= start && current <= end) {
+        progress = (current - start) / (end - start);
+      } else if (current > end) {
+        progress = 1;
+      }
+
+      setScrollProgress(Math.min(Math.max(progress, 0), 1));
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      if (container) container.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrollContainerRef]);
+
+  // Cards visibility
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-          setIsExiting(false);
-        } else if (!entry.isIntersecting && isVisible) {
-          setIsExiting(true);
-          setTimeout(() => {
-            setIsVisible(false);
-            setIsExiting(false);
-          }, 1800);
+        if (entry.isIntersecting) {
+          setIsCardsVisible(true);
         }
       },
-      { root: container, threshold: 0.3 }
+      { root: container, threshold: 0.2 }
     );
 
-    const currentSection = sectionRef.current;
-    if (currentSection) {
-      observer.observe(currentSection);
+    if (cardsSectionRef.current) {
+      observer.observe(cardsSectionRef.current);
     }
 
     return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
+      if (cardsSectionRef.current) {
+        observer.unobserve(cardsSectionRef.current);
       }
     };
-  }, [isVisible, scrollContainerRef]);
+  }, [scrollContainerRef]);
+
+  // Animation timing
+  const titleRevealEnd = 0.35;
+  const titleExitStart = 0.35;
+  const titleExitEnd = 0.60;
+  const subtitleRevealStart = 0.62;
+  const subtitleRevealEnd = 0.80;
+  const subtitleMoveStart = 0.80;
+  const gradientWidth = 55;
+
+  // Title animation
+  let titleMaskGradient = 'linear-gradient(to right, black, black)';
+
+  if (scrollProgress <= titleRevealEnd) {
+    const revealProgress = scrollProgress / titleRevealEnd;
+    const eased = 1 - Math.pow(1 - revealProgress, 3);
+    const visibleStop = eased * (100 + gradientWidth) - gradientWidth;
+    const transparentStop = eased * (100 + gradientWidth);
+    titleMaskGradient = `linear-gradient(to right, black ${visibleStop}%, transparent ${transparentStop}%)`;
+  } else if (scrollProgress >= titleExitStart && scrollProgress <= titleExitEnd) {
+    const exitProgress = (scrollProgress - titleExitStart) / (titleExitEnd - titleExitStart);
+    const eased = exitProgress ** 3;
+    const visiblePercent = 1 - eased;
+    const transparentStop = visiblePercent * (100 + gradientWidth);
+    const blackStop = transparentStop - gradientWidth;
+    titleMaskGradient = `linear-gradient(to right, black ${blackStop}%, transparent ${transparentStop}%)`;
+  } else if (scrollProgress > titleExitEnd) {
+    titleMaskGradient = `linear-gradient(to right, transparent, transparent)`;
+  }
+
+  // Subtitle animation
+  const subtitle = 'A blend of creative design, strategic thinking, and technical skills';
+  const words = subtitle.split(' ');
+  let subtitleTranslateY = 0;
+
+  const getWordMaskGradient = (wordIndex: number) => {
+    if (scrollProgress < subtitleRevealStart) {
+      return 'linear-gradient(to right, transparent, transparent)';
+    }
+    
+    const totalWords = words.length;
+    const revealDuration = subtitleRevealEnd - subtitleRevealStart;
+    const timePerWord = revealDuration / totalWords;
+    
+    const wordStartTime = subtitleRevealStart + (wordIndex * timePerWord);
+    const wordEndTime = wordStartTime + timePerWord;
+    
+    if (scrollProgress < wordStartTime) {
+      return 'linear-gradient(to right, transparent, transparent)';
+    } else if (scrollProgress >= wordStartTime && scrollProgress <= wordEndTime) {
+      const wordProgress = (scrollProgress - wordStartTime) / timePerWord;
+      const eased = 1 - Math.pow(1 - wordProgress, 3);
+      const visibleStop = eased * (100 + gradientWidth) - gradientWidth;
+      const transparentStop = eased * (100 + gradientWidth);
+      return `linear-gradient(to right, black ${visibleStop}%, transparent ${transparentStop}%)`;
+    } else {
+      return 'linear-gradient(to right, black, black)';
+    }
+  };
+
+  if (scrollProgress > subtitleMoveStart) {
+    const moveProgress = (scrollProgress - subtitleMoveStart) / (1 - subtitleMoveStart);
+    subtitleTranslateY = -Math.min(moveProgress ** 2 * 100, 100);
+  }
 
   return (
     <>
-      <style>{`
-        @keyframes floatIn {
-          0% {
-            opacity: 0;
-            transform: translateY(120px) rotate(8deg) scale(0.9);
-          }
-          30% {
-            transform: translateY(80px) rotate(-3deg) scale(0.95);
-          }
-          60% {
-            transform: translateY(20px) rotate(2deg) scale(1.02);
-          }
-          80% {
-            transform: translateY(-5px) rotate(-1deg) scale(1.01);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg) scale(1);
-          }
-        }
+      {/* Projects Heading Section */}
+      <section ref={headingSectionRef} className="h-[600vh] relative bg-yellow-400">
+        <div className="sticky top-0 h-screen w-full flex justify-center items-center overflow-hidden">
+          {/* PROJECTS title */}
+          <h2
+            className="font-anton text-[18vw] text-black leading-none absolute"
+            style={{
+              transform: 'scaleX(0.75)',
+              maskImage: titleMaskGradient,
+              WebkitMaskImage: titleMaskGradient,
+            }}
+          >
+            PROJECTS
+          </h2>
 
-        @keyframes floatOut {
-          0% {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg) scale(1);
-          }
-          20% {
-            transform: translateY(-10px) rotate(-2deg) scale(1.02);
-          }
-          50% {
-            transform: translateY(30px) rotate(3deg) scale(0.98);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(150px) rotate(-5deg) scale(0.85);
-          }
-        }
-      `}</style>
+          {/* Subtitle */}
+          <div
+            className="absolute px-20 text-center max-w-6xl"
+            style={{
+              transform: `translateY(${subtitleTranslateY}vh)`,
+            }}
+          >
+            <p
+              className="text-[3.5vw] text-black leading-tight"
+              style={{
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontWeight: 300,
+              }}
+            >
+              {words.map((word, index) => (
+                <span
+                  key={index}
+                  style={{
+                    maskImage: getWordMaskGradient(index),
+                    WebkitMaskImage: getWordMaskGradient(index),
+                    display: 'inline-block',
+                    marginRight: '0.3em',
+                  }}
+                >
+                  {word}
+                </span>
+              ))}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Cards Section */}
       <div
-        ref={sectionRef}
-        className="bg-yellow-400 text-white pt-24 pb-32 sm:pb-48 relative overflow-hidden"
+        ref={cardsSectionRef}
+        className="bg-gradient-to-b from-yellow-400 via-yellow-400/70 via-yellow-400/40 via-yellow-400/20 to-black text-white pt-24 pb-32 sm:pb-48 relative overflow-hidden"
       >
         <div className="container mx-auto px-4 text-center">
-
-          <div className="relative w-full max-w-5xl mx-auto h-[550px] sm:h-[600px] flex items-center justify-center">
+          <div className="relative w-full max-w-7xl mx-auto h-[650px] flex items-center justify-center gap-10">
             <ProjectCard
               project={projects[0]}
-              rotation="rotate(-15deg)"
-              translation="translateX(-120%)"
-              zIndex="z-10"
-              index={0}
-              isVisible={isVisible}
-              isExiting={isExiting}
+              isVisible={isCardsVisible}
+              delay={0}
             />
             <ProjectCard
               project={projects[1]}
-              rotation="rotate(2deg)"
-              translation="scale(1.08) -translate-y-4"
-              zIndex="z-20"
-              index={1}
-              isVisible={isVisible}
-              isExiting={isExiting}
+              isVisible={isCardsVisible}
+              delay={1000}
             />
             <ProjectCard
               project={projects[2]}
-              rotation="rotate(15deg)"
-              translation="translateX(120%)"
-              zIndex="z-10"
-              index={2}
-              isVisible={isVisible}
-              isExiting={isExiting}
+              isVisible={isCardsVisible}
+              delay={1750}
             />
           </div>
         </div>
