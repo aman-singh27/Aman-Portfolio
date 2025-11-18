@@ -179,11 +179,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <div
-      className="transition-all duration-1000 ease-out transform-gpu hover:scale-105 hover:z-50"
+      className="transition-all duration-[2000ms] ease-out transform-gpu hover:scale-105 hover:z-50"
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(80px)',
+        transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(120px) scale(0.85)',
         transitionDelay: isVisible ? `${delay}ms` : '0ms',
+        filter: isVisible ? 'blur(0px)' : 'blur(10px)',
       }}
     >
       <div className="w-96 h-[580px] bg-black rounded-[40px] border-2 border-gray-800 shadow-2xl overflow-hidden flex flex-col relative group">
@@ -300,14 +301,15 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
     };
   }, [scrollContainerRef]);
 
-  // Animation timing
-  const titleRevealEnd = 0.35;
-  const titleExitStart = 0.35;
-  const titleExitEnd = 0.60;
-  const subtitleRevealStart = 0.62;
-  const subtitleRevealEnd = 0.80;
-  const subtitleMoveStart = 0.80;
-  const gradientWidth = 55;
+  // Animation timing - adjusted for more cinematic feel
+  const titleRevealEnd = 0.25;
+  const titleExitStart = 0.30;
+  const titleExitEnd = 0.50;
+  const subtitleRevealStart = 0.52;
+  const subtitleRevealEnd = 0.75;
+  const subtitleMoveStart = 0.78;
+  const titleGradientWidth = 120;
+  const subtitleGradientWidth = 180;
 
   // Title animation
   let titleMaskGradient = 'linear-gradient(to right, black, black)';
@@ -315,15 +317,15 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
   if (scrollProgress <= titleRevealEnd) {
     const revealProgress = scrollProgress / titleRevealEnd;
     const eased = 1 - Math.pow(1 - revealProgress, 3);
-    const visibleStop = eased * (100 + gradientWidth) - gradientWidth;
-    const transparentStop = eased * (100 + gradientWidth);
+    const visibleStop = eased * (100 + titleGradientWidth) - titleGradientWidth;
+    const transparentStop = eased * (100 + titleGradientWidth);
     titleMaskGradient = `linear-gradient(to right, black ${visibleStop}%, transparent ${transparentStop}%)`;
   } else if (scrollProgress >= titleExitStart && scrollProgress <= titleExitEnd) {
     const exitProgress = (scrollProgress - titleExitStart) / (titleExitEnd - titleExitStart);
     const eased = exitProgress ** 3;
     const visiblePercent = 1 - eased;
-    const transparentStop = visiblePercent * (100 + gradientWidth);
-    const blackStop = transparentStop - gradientWidth;
+    const transparentStop = visiblePercent * (100 + titleGradientWidth);
+    const blackStop = transparentStop - titleGradientWidth;
     titleMaskGradient = `linear-gradient(to right, black ${blackStop}%, transparent ${transparentStop}%)`;
   } else if (scrollProgress > titleExitEnd) {
     titleMaskGradient = `linear-gradient(to right, transparent, transparent)`;
@@ -351,8 +353,8 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
     } else if (scrollProgress >= wordStartTime && scrollProgress <= wordEndTime) {
       const wordProgress = (scrollProgress - wordStartTime) / timePerWord;
       const eased = 1 - Math.pow(1 - wordProgress, 3);
-      const visibleStop = eased * (100 + gradientWidth) - gradientWidth;
-      const transparentStop = eased * (100 + gradientWidth);
+      const visibleStop = eased * (100 + subtitleGradientWidth) - subtitleGradientWidth;
+      const transparentStop = eased * (100 + subtitleGradientWidth);
       return `linear-gradient(to right, black ${visibleStop}%, transparent ${transparentStop}%)`;
     } else {
       return 'linear-gradient(to right, black, black)';
@@ -413,35 +415,38 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
         </div>
       </section>
 
-      {/* Projects Cards Section */}
-      <div
-        ref={cardsSectionRef}
-        className="bg-gradient-to-b from-yellow-400 via-yellow-400/70 via-yellow-400/40 via-yellow-400/20 to-black text-white pt-24 pb-32 sm:pb-48 relative overflow-hidden"
-      >
-        <div className="container mx-auto px-4 text-center">
-          <div className="relative w-full max-w-7xl mx-auto h-[650px] flex items-center justify-center gap-10">
-            <ProjectCard
-              project={projects[0]}
-              isVisible={isCardsVisible}
-              delay={0}
-            />
-            <ProjectCard
-              project={projects[1]}
-              isVisible={isCardsVisible}
-              delay={1000}
-            />
-            <ProjectCard
-              project={projects[2]}
-              isVisible={isCardsVisible}
-              delay={1750}
-            />
+      {/* Combined Subtitle End + Projects Cards Section with Gradient */}
+      <div className="bg-gradient-to-b from-yellow-400 via-yellow-400 via-30% to-black text-white relative overflow-hidden">
+        {/* Spacer for subtitle transition */}
+        <div className="h-96"></div>
+        
+        {/* Projects Cards */}
+        <div ref={cardsSectionRef} className="pt-64 pb-64">
+          <div className="container mx-auto px-4 text-center">
+            <div className="relative w-full max-w-7xl mx-auto h-[650px] flex items-center justify-center gap-10">
+              <ProjectCard
+                project={projects[0]}
+                isVisible={isCardsVisible}
+                delay={200}
+              />
+              <ProjectCard
+                project={projects[1]}
+                isVisible={isCardsVisible}
+                delay={800}
+              />
+              <ProjectCard
+                project={projects[2]}
+                isVisible={isCardsVisible}
+                delay={1400}
+              />
+            </div>
           </div>
-        </div>
 
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1/2 max-w-2xl bg-white/5 rounded-full blur-[120px]"
-          aria-hidden="true"
-        ></div>
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1/2 max-w-2xl bg-white/5 rounded-full blur-[120px]"
+            aria-hidden="true"
+          ></div>
+        </div>
       </div>
     </>
   );
