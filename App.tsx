@@ -8,10 +8,11 @@ import IntroAnimation from './components/IntroAnimation';
 import About from './components/About';
 import Experience from './components/Experience';
 import Education from './components/Education';
-import Skills from './components/Skills';
 import Certificates from './components/Certificates';
 import SectionDifferentiator from './components/SectionDifferentiator';
 import Projects from './components/projects';
+import SkillScroll from './components/SkillScroll';
+import Contact from './components/Contact';
 
 const App: React.FC = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -55,7 +56,7 @@ const App: React.FC = () => {
         }
     };
 
-     useEffect(() => {
+    useEffect(() => {
         const container = scrollContainerRef.current;
         if (container) {
             container.addEventListener('scroll', handleScroll, { passive: true });
@@ -76,11 +77,11 @@ const App: React.FC = () => {
                 if (href) {
                     const targetId = href.substring(1);
                     const targetElement = document.getElementById(targetId);
-                    
+
                     if (targetElement) {
                         const container = scrollContainerRef.current;
                         const targetTop = targetElement.offsetTop - container.offsetTop;
-                        
+
                         container.scrollTo({
                             top: targetTop,
                             behavior: 'smooth'
@@ -96,7 +97,7 @@ const App: React.FC = () => {
         };
     }, []);
 
-    
+
     // Animate hero section based on scroll.
     const heroProgress = scrollProgress / 0.15; // Animate over first 15% of scroll
     const heroOpacity = Math.max(0, 1 - heroProgress * 2);
@@ -117,7 +118,7 @@ const App: React.FC = () => {
     return (
         <main className="h-screen w-screen bg-black text-white overflow-hidden p-8">
             <IntroAnimation animationStage={animationStage} />
-            <div 
+            <div
                 className="w-full h-full"
                 style={{
                     opacity: animationStage === 2 ? 1 : 0,
@@ -138,18 +139,18 @@ const App: React.FC = () => {
                         }}
                     />
 
-                    <div 
+                    <div
                         ref={scrollContainerRef}
                         className="relative h-full w-full rounded-[40px] overflow-y-auto overflow-x-hidden hide-scrollbar"
                     >
-                        <div 
-                          className="absolute bottom-0 left-0 right-0 h-1/2 z-0"
-                          style={{
-                            backgroundImage: 'radial-gradient(circle at center, rgba(100, 100, 100, 0.2) 1px, transparent 1px)',
-                            backgroundSize: '1.2rem 1.2rem',
-                            maskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
-                            WebkitMaskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
-                          }}
+                        <div
+                            className="absolute bottom-0 left-0 right-0 h-1/2 z-0"
+                            style={{
+                                backgroundImage: 'radial-gradient(circle at center, rgba(100, 100, 100, 0.2) 1px, transparent 1px)',
+                                backgroundSize: '1.2rem 1.2rem',
+                                maskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
+                                WebkitMaskImage: 'linear-gradient(to top, black 25%, transparent 100%)',
+                            }}
                         />
 
                         <Header />
@@ -162,13 +163,13 @@ const App: React.FC = () => {
                         <Ruler scrollProgress={scrollProgress} />
 
                         <div className="relative w-full">
-                            <section 
+                            <section
                                 className="h-screen sticky top-0 flex flex-col justify-center items-center"
                                 style={{ opacity: heroOpacity, pointerEvents: heroOpacity > 0 ? 'auto' : 'none' }}
                             >
-                                <div 
-                                    className="text-center transition-transform duration-300 ease-out relative" 
-                                    style={{ 
+                                <div
+                                    className="text-center transition-transform duration-300 ease-out relative"
+                                    style={{
                                         transform: `translateY(${heroY}px) scale(${heroScale})`,
                                     }}
                                 >
@@ -176,35 +177,35 @@ const App: React.FC = () => {
                                     <h1 className="font-anton text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
                                         AMAN SINGH
                                     </h1>
-                                     {/* this is sphere positio */}
-                                     <div 
+                                    {/* this is sphere positio */}
+                                    <div
                                         className="absolute left-1/2 -translate-x-1/2 bottom-[-350px] translate-y-1/2 pointer-events-none z-10"
                                     >
                                         <Globe width={1000} height={1000} />
                                     </div>
-                                    <a 
-                                        href="#content-start" 
+                                    <a
+                                        href="#content-start"
                                         className="cursor-pointer absolute bottom-[-100px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white opacity-80 hover:opacity-100 transition-opacity z-20"
                                     >
                                         <span className="text-sm tracking-widest">SCROLL</span>
                                         <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8 1V23M8 23L1 16M8 23L15 16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                            <path d="M8 1V23M8 23L1 16M8 23L15 16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
                                     </a>
                                 </div>
                             </section>
-                            
-                            <section 
+
+                            <section
                                 id="content-start"
                                 className="relative z-10"
                             >
-                                 <div 
-                                    className="w-full" 
-                                    style={{ 
+                                <div
+                                    className="w-full"
+                                    style={{
                                         opacity: workOpacity,
                                         transform: `translateY(${workY}vh)`
                                     }}
-                                 >
+                                >
                                     <About scrollContainerRef={scrollContainerRef} />
                                     <SectionDifferentiator scrollContainerRef={scrollContainerRef} />
                                     <div className="bg-white text-black">
@@ -214,11 +215,11 @@ const App: React.FC = () => {
                                         </div>
                                         <Experience />
                                         <Education />
-                                        <Skills />
-                                        
                                         <Certificates />
                                     </div>
-                                 </div>
+                                    <SkillScroll />
+                                    <Contact />
+                                </div>
                             </section>
                         </div>
                     </div>
