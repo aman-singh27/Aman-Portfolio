@@ -14,16 +14,42 @@ const skills = [
     "UX", "UI", "PROTOTYPING", "WIREFRAMING", "ACCESSIBILITY"
 ];
 
-// Simple image plane component without effects
-const ImagePlane: React.FC<{
-    position: [number, number, number];
+// Animated Image Plane that updates its own position/scale via refs
+const AnimatedImagePlane: React.FC<{
+    index: number;
+    totalImages: number;
+    spacing: number;
     imageUrl: string;
-    scale: number;
-}> = ({ position, imageUrl, scale }) => {
+    scrollRef: React.MutableRefObject<number>;
+}> = ({ index, totalImages, spacing, imageUrl, scrollRef }) => {
+    const meshRef = useRef<THREE.Mesh>(null);
     const texture = useLoader(TextureLoader, imageUrl);
+    const totalWidth = totalImages * spacing;
+    const halfWidth = totalWidth / 2;
+
+    useFrame(() => {
+        if (!meshRef.current) return;
+
+        // Calculate wrapped position relative to the scroll
+        const baseX = index * spacing;
+        let xPos = baseX - scrollRef.current;
+
+        // Infinite scroll wrapping logic
+        // Centers the result in [-halfWidth, halfWidth]
+        xPos = ((xPos + halfWidth) % totalWidth + totalWidth) % totalWidth - halfWidth;
+
+        // Scale based on distance from center
+        const distanceFromCenter = Math.abs(xPos);
+        const maxDistance = spacing * 2;
+        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+        const scale = 1.0 + (normalizedDistance * 0.5);
+
+        meshRef.current.position.set(xPos, 0, 0);
+        meshRef.current.scale.set(scale, scale, 1);
+    });
 
     return (
-        <mesh position={position} scale={[scale, scale, 1]}>
+        <mesh ref={meshRef}>
             <planeGeometry args={[8, 14]} />
             <meshBasicMaterial map={texture} />
         </mesh>
@@ -31,13 +57,15 @@ const ImagePlane: React.FC<{
 };
 
 // Skill Ticker Component (Slot Machine Text)
-const SkillTicker: React.FC<{ scrollIndex: number }> = ({ scrollIndex }) => {
+const SkillTicker: React.FC<{ scrollRef: React.MutableRefObject<number>; spacing: number }> = ({ scrollRef, spacing }) => {
     const groupRef = useRef<THREE.Group>(null);
-    const lineHeight = 0.8; // Reduced line height for tighter lock
+    const lineHeight = 0.8;
 
     useFrame((state, delta) => {
         if (!groupRef.current) return;
 
+        // Calculate discrete scroll index
+        const scrollIndex = Math.round(scrollRef.current / spacing);
         const targetY = scrollIndex * lineHeight;
 
         groupRef.current.position.y = THREE.MathUtils.damp(
@@ -47,15 +75,10 @@ const SkillTicker: React.FC<{ scrollIndex: number }> = ({ scrollIndex }) => {
             delta
         );
 
-        // Update opacity for each child based on visual position
-        groupRef.current.children.forEach((child, i) => {
-            // Get local y position of this text (negative stack) plus the group's current y offset
+        // Update opacity
+        groupRef.current.children.forEach((child) => {
             const worldY = child.position.y + groupRef.current!.position.y;
-
-            // Distance from center (0)
             const dist = Math.abs(worldY);
-
-            // Gentle fade: 1 at center, 0 at 1.0 distance (slightly more than 1 line height)
             const opacity = Math.max(0, 1 - dist);
 
             // @ts-ignore
@@ -65,14 +88,12 @@ const SkillTicker: React.FC<{ scrollIndex: number }> = ({ scrollIndex }) => {
 
     return (
         <group position={[0, 0, 2]}>
-            {/* Background for better visibility */}
             <RoundedBox args={[7, 1.2, 0.1]} radius={0.1} position={[0, 0, -0.1]}>
                 <meshBasicMaterial color="black" transparent opacity={0.6} />
             </RoundedBox>
 
-            {/* Static Sentence Prefix */}
             <Text
-                position={[-0.4, 0, 0]} // Brought closer to center
+                position={[-0.4, 0, 0]}
                 fontSize={0.4}
                 color="white"
                 anchorX="right"
@@ -84,12 +105,11 @@ const SkillTicker: React.FC<{ scrollIndex: number }> = ({ scrollIndex }) => {
                 MY TECH STACK
             </Text>
 
-            {/* Ticking Skills */}
-            <group ref={groupRef} position={[0.4, 0, 0]}> {/* Brought closer to center */}
+            <group ref={groupRef} position={[0.4, 0, 0]}>
                 {skills.map((skill, i) => (
                     <Text
                         key={i}
-                        position={[0, -i * lineHeight, 0]} // Aligned locally
+                        position={[0, -i * lineHeight, 0]}
                         fontSize={0.4}
                         color="white"
                         anchorX="left"
@@ -107,53 +127,45 @@ const SkillTicker: React.FC<{ scrollIndex: number }> = ({ scrollIndex }) => {
 };
 
 // Ring component with ticking animation
-const ThumbnailRing: React.FC<{ images: string[]; scrollIndex: number }> = ({ images, scrollIndex }) => {
+const ThumbnailRing: React.FC<{ images: string[]; scrollRef: React.MutableRefObject<number>; spacing: number }> = ({ images, scrollRef, spacing }) => {
     const groupRef = useRef<THREE.Group>(null);
-    const radius = 4; // Radius of the ring
+    const radius = 4;
     const totalImages = images.length;
     const anglePerImage = (Math.PI * 2) / totalImages;
-
-    // Load all textures efficiently once
     const textures = useLoader(TextureLoader, images);
 
     useFrame((state, delta) => {
         if (!groupRef.current) return;
 
-        // Calculate target rotation based on discrete index (the "tick")
-        // REMOVED negative sign to invert rotation direction
+        const scrollIndex = Math.round(scrollRef.current / spacing);
         const targetRotation = scrollIndex * anglePerImage;
 
-        // Smooth snap to the target rotation (the "jerk" that looks smooth)
-        // High lerp factor = faster snap
         groupRef.current.rotation.z = THREE.MathUtils.damp(
             groupRef.current.rotation.z,
             targetRotation,
-            12, // Lambda: higher = snappier
+            12,
             delta
         );
     });
 
     return (
-        <group ref={groupRef} position={[0, 0, 4]}> {/* Positioned in front of main slider */}
+        <group ref={groupRef} position={[0, 0, 4]}>
             {images.map((img, i) => {
                 const angle = i * anglePerImage;
                 const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius; // Z-axis rotation layout
+                const y = Math.sin(angle) * radius;
 
                 return (
                     <group
                         key={i}
                         position={[x, y, 0]}
-                        rotation={[0, 0, angle - Math.PI / 2]} // Align image to center tangent
+                        rotation={[0, 0, angle - Math.PI / 2]}
                     >
-                        {/* Border (Red Background) */}
                         <mesh position={[0, 0, 0]}>
-                            <planeGeometry args={[0.26, 0.41]} /> {/* Slightly larger than image */}
+                            <planeGeometry args={[0.26, 0.41]} />
                             <meshBasicMaterial color="#ff0000" />
                         </mesh>
-
-                        {/* Image */}
-                        <mesh position={[0, 0, 0.001]}> {/* Slightly in front to avoid z-fighting */}
+                        <mesh position={[0, 0, 0.001]}>
                             <planeGeometry args={[0.25, 0.4]} />
                             <meshBasicMaterial map={textures[i]} />
                         </mesh>
@@ -164,64 +176,50 @@ const ThumbnailRing: React.FC<{ images: string[]; scrollIndex: number }> = ({ im
     );
 };
 
-// Main scene component
-const Scene: React.FC<{ scrollX: number; images: string[] }> = ({
-    scrollX,
-    images
-}) => {
+// Main scene component - handles physics updates in useFrame
+const Scene: React.FC<{
+    targetScrollX: React.MutableRefObject<number>;
+    images: string[];
+}> = ({ targetScrollX, images }) => {
     const { camera } = useThree();
+    const scrollRef = useRef(0); // Internal current scroll state (no React state)
+    const spacing = 12;
 
     useEffect(() => {
         camera.position.z = 10;
     }, [camera]);
 
-    // Create infinite looping carousel
-    const planes = [];
-    const spacing = 12;
-    const totalImages = images.length;
-    const numVisiblePlanes = 5; // Number of planes visible at once
-
-    // Calculate which images should be visible based on scroll position
-    const scrollOffset = Math.floor(scrollX / spacing);
-
-    // Calculate discrete index for the ring "tick"
-    const discreteScrollIndex = Math.round(scrollX / spacing);
-
-    for (let i = -numVisiblePlanes; i <= numVisiblePlanes; i++) {
-        const imageIndex = ((scrollOffset + i) % totalImages + totalImages) % totalImages;
-        const imageUrl = images[imageIndex];
-        const xPos = (scrollOffset + i) * spacing - scrollX;
-
-        // Calculate scale based on distance from center (0)
-        // Images at center (xPos = 0) have scale 1.0
-        // Images at edges have scale 1.5 (zoomed in)
-        const distanceFromCenter = Math.abs(xPos);
-        const maxDistance = spacing * 2; // Distance at which zoom is maximum
-        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-        const scale = 1.0 + (normalizedDistance * 0.5); // Scale from 1.0 to 1.5
-
-        planes.push(
-            <ImagePlane
-                key={`${scrollOffset + i}`}
-                position={[xPos, 0, 0]}
-                imageUrl={imageUrl}
-                scale={scale}
-            />
+    // Animation physics loop
+    useFrame((state, delta) => {
+        const damping = 5; // Adjusted for delta time usage. Original was 0.15 per frame ~ approx 9 @ 60fps
+        // Using THREE.MathUtils.damp is smoother for frame-rate independence
+        scrollRef.current = THREE.MathUtils.damp(
+            scrollRef.current,
+            targetScrollX.current,
+            damping,
+            delta
         );
-    }
+    });
 
     return (
         <>
             <ambientLight intensity={0.8} />
             <directionalLight position={[10, 10, 5]} intensity={0.5} />
-            {/* Background Ring */}
-            <ThumbnailRing images={images} scrollIndex={discreteScrollIndex} />
 
-            {/* Slot Machine Skill Text */}
-            <SkillTicker scrollIndex={discreteScrollIndex} />
+            <ThumbnailRing images={images} scrollRef={scrollRef} spacing={spacing} />
+            <SkillTicker scrollRef={scrollRef} spacing={spacing} />
 
-            {/* Main Carousel */}
-            {planes}
+            {/* Render ALL images once. They update their own positions. */}
+            {images.map((imageUrl, i) => (
+                <AnimatedImagePlane
+                    key={i}
+                    index={i}
+                    totalImages={images.length}
+                    spacing={spacing}
+                    imageUrl={imageUrl}
+                    scrollRef={scrollRef}
+                />
+            ))}
         </>
     );
 };
@@ -229,10 +227,11 @@ const Scene: React.FC<{ scrollX: number; images: string[] }> = ({
 // Main SkillScroll component
 const SkillScroll: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [scrollX, setScrollX] = useState(0);
     const [isActive, setIsActive] = useState(false);
+
+    // We use a ref for the target scroll position instead of state
+    // This allows updates without re-renders of the parent component
     const targetScrollX = useRef(0);
-    const animationFrameId = useRef<number | undefined>(undefined);
 
     const images = [
         new URL('../src/images/Gemini_Generated_Image_1et68r1et68r1et6.webp', import.meta.url).href,
@@ -258,12 +257,12 @@ const SkillScroll: React.FC = () => {
         new URL('../src/images/Gemini_Generated_Image_vphw87vphw87vphw.webp', import.meta.url).href,
     ];
 
-    // Simple smooth scroll
     useEffect(() => {
         if (!isActive) return;
 
         const handleWheel = (e: WheelEvent) => {
             e.preventDefault();
+            // Update the ref directly - no re-render
             targetScrollX.current += e.deltaY * 0.01;
         };
 
@@ -277,30 +276,7 @@ const SkillScroll: React.FC = () => {
                 container.removeEventListener('wheel', handleWheel);
             }
         };
-    }, [isActive]); // Re-run when active state changes
-
-    useEffect(() => {
-        // Animation loop for smooth scrolling
-        const animate = () => {
-            const damping = 0.15;
-            const diff = targetScrollX.current - scrollX;
-
-            if (Math.abs(diff) > 0.001) {
-                const newScrollX = scrollX + diff * damping;
-                setScrollX(newScrollX);
-            }
-
-            animationFrameId.current = requestAnimationFrame(animate);
-        };
-
-        animationFrameId.current = requestAnimationFrame(animate);
-
-        return () => {
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
-            }
-        };
-    }, [scrollX]);
+    }, [isActive]);
 
     return (
         <section
@@ -309,7 +285,6 @@ const SkillScroll: React.FC = () => {
             id="skillscroll"
             onClick={() => setIsActive(!isActive)}
         >
-            {/* WebGL Canvas */}
             <Canvas
                 className={`absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-40'}`}
                 gl={{
@@ -318,10 +293,9 @@ const SkillScroll: React.FC = () => {
                     powerPreference: 'high-performance'
                 }}
             >
-                <Scene scrollX={scrollX} images={images} />
+                <Scene targetScrollX={targetScrollX} images={images} />
             </Canvas>
 
-            {/* Fixed Center Text Overlay */}
             <div className={`absolute inset-0 flex items-center justify-center pointer-events-none z-40 transition-opacity duration-300 ${isActive ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="text-center">
                     <h2 className="text-6xl font-bold text-white tracking-[0.3em] mb-4">
@@ -333,13 +307,11 @@ const SkillScroll: React.FC = () => {
                 </div>
             </div>
 
-            {/* Inactive Overlay - Visual Hint */}
             {!isActive && (
                 <div className="absolute inset-0 bg-black/40 z-30 pointer-events-none" />
             )}
 
 
-            {/* Scroll Hint (Only visible when active) */}
             <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-xs tracking-widest z-40 transition-opacity duration-300 ${isActive ? 'opacity-60' : 'opacity-0'}`}>
                 <div className="flex items-center gap-2">
                     <span>←</span>
@@ -348,7 +320,6 @@ const SkillScroll: React.FC = () => {
                 </div>
             </div>
 
-            {/* Explicit Close Button for Mobile/Touch */}
             <button
                 className={`absolute top-8 right-8 text-white z-50 p-4 bg-black/50 backdrop-blur-md rounded-full border border-white/20 transition-all duration-300 hover:bg-red-500/20 hover:border-red-500 ${isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                 onClick={(e) => {

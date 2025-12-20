@@ -12,11 +12,11 @@ const Contact: React.FC = () => {
 
     // Magnetic Contact Button Component
     const ContactButton = () => {
-        const [position, setPosition] = useState({ x: 0, y: 0 });
         const buttonRef = React.useRef<HTMLDivElement>(null);
+        const linkRef = React.useRef<HTMLAnchorElement>(null);
 
         const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-            if (!buttonRef.current) return;
+            if (!buttonRef.current || !linkRef.current) return;
 
             const rect = buttonRef.current.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
@@ -25,11 +25,13 @@ const Contact: React.FC = () => {
             const deltaX = (e.clientX - centerX) * 0.15; // 15% of distance
             const deltaY = (e.clientY - centerY) * 0.15;
 
-            setPosition({ x: deltaX, y: deltaY });
+            linkRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
         };
 
         const handleMouseLeave = () => {
-            setPosition({ x: 0, y: 0 });
+            if (linkRef.current) {
+                linkRef.current.style.transform = 'translate(0px, 0px)';
+            }
         };
 
         return (
@@ -47,10 +49,10 @@ const Contact: React.FC = () => {
                 }}
             >
                 <a
+                    ref={linkRef}
                     href="mailto:amansingh271204@gmail.com"
                     className="relative group"
                     style={{
-                        transform: `translate(${position.x}px, ${position.y}px)`,
                         transition: 'transform 0.2s ease-out',
                     }}
                 >

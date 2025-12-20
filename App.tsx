@@ -33,9 +33,6 @@ const socialItems = [
 ];
 
 // MANUAL SCROLL OFFSETS
-// Adjust these values to fine-tune where each section lands.
-// Negative values move the section LOWER (show more of the top).
-// Positive values move the section HIGHER.
 const sectionOffsets: { [key: string]: number } = {
     'content-start': -815,
     'about': 1773,
@@ -46,9 +43,35 @@ const sectionOffsets: { [key: string]: number } = {
     'contact': 878
 };
 
-const App: React.FC = () => {
+// Isolated component for Ruler to prevent full App re-renders
+const ScrollAwareRuler: React.FC<{ scrollContainerRef: React.RefObject<HTMLDivElement> }> = ({ scrollContainerRef }) => {
     const [scrollProgress, setScrollProgress] = useState(0);
+
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const { scrollTop, scrollHeight, clientHeight } = container;
+            const totalScrollableHeight = scrollHeight - clientHeight;
+            const currentProgress = totalScrollableHeight > 0 ? scrollTop / totalScrollableHeight : 0;
+            setScrollProgress(currentProgress);
+        };
+
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, [scrollContainerRef]);
+
+    return <Ruler scrollProgress={scrollProgress} />;
+};
+
+const App: React.FC = () => {
+    // Removed scrollProgress state to prevent re-renders
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const heroRef = useRef<HTMLElement>(null);
+    const heroContentRef = useRef<HTMLDivElement>(null);
+    const workRef = useRef<HTMLDivElement>(null);
+    const borderRef = useRef<HTMLDivElement>(null);
 
     // State to manage the animation stages
     // 0: Initial yellow screen (bars are in place)
@@ -79,23 +102,57 @@ const App: React.FC = () => {
         };
     }, []);
 
-    const handleScroll = () => {
-        if (scrollContainerRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
-            const totalScrollableHeight = scrollHeight - clientHeight;
-            const currentProgress = totalScrollableHeight > 0 ? scrollTop / totalScrollableHeight : 0;
-            setScrollProgress(currentProgress);
-
-        }
-    };
-
+    // Direct DOM manipulation for performance (avoids React render cycle)
     useEffect(() => {
         const container = scrollContainerRef.current;
-        if (container) {
-            container.addEventListener('scroll', handleScroll, { passive: true });
-            return () => container.removeEventListener('scroll', handleScroll);
-        }
-    }, []);
+        if (!container) return;
+
+        const handleScroll = () => {
+            const { scrollTop, scrollHeight, clientHeight } = container;
+            const totalScrollableHeight = scrollHeight - clientHeight;
+            const scrollProgress = totalScrollableHeight > 0 ? scrollTop / totalScrollableHeight : 0;
+
+            requestAnimationFrame(() => {
+                // Animate hero section
+                if (heroRef.current && heroContentRef.current) {
+                    const heroProgress = scrollProgress / 0.15;
+                    const heroOpacity = Math.max(0, 1 - heroProgress * 2);
+                    const heroScale = Math.max(0.8, 1 - heroProgress * 0.15);
+                    const heroY = -heroProgress * 100;
+
+                    heroRef.current.style.opacity = `${heroOpacity}`;
+                    heroRef.current.style.pointerEvents = heroOpacity > 0 ? 'auto' : 'none';
+                    heroContentRef.current.style.transform = `translateY(${heroY}px) scale(${heroScale})`;
+                }
+
+                // Animate work section
+                if (workRef.current) {
+                    const workProgress = Math.max(0, scrollProgress / 0.20);
+                    const workOpacity = Math.min(1, workProgress);
+                    const workY = Math.max(0, 50 - workProgress * 50);
+
+                    workRef.current.style.opacity = `${workOpacity}`;
+                    workRef.current.style.transform = `translateY(${workY}vh)`;
+                }
+
+                // Animate border
+                if (borderRef.current) {
+                    const borderProgress = Math.min(1, scrollProgress / 0.1);
+                    const borderOpacity = 1 - borderProgress;
+                    const borderScale = 1 + borderProgress * 0.2;
+                    const borderY = borderProgress * 50;
+
+                    borderRef.current.style.opacity = `${borderOpacity}`;
+                    borderRef.current.style.transform = `translateY(${borderY}px) scale(${borderScale})`;
+                }
+            });
+        };
+
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        // Initial call to set styles
+        handleScroll();
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, [animationStage]); // Re-bind when animationStage settles (content visible)
 
     // Effect for smooth scrolling on anchor links
     useEffect(() => {
@@ -132,24 +189,6 @@ const App: React.FC = () => {
         };
     }, []);
 
-
-    // Animate hero section based on scroll.
-    const heroProgress = scrollProgress / 0.15; // Animate over first 15% of scroll
-    const heroOpacity = Math.max(0, 1 - heroProgress * 2);
-    const heroScale = Math.max(0.8, 1 - heroProgress * 0.15);
-    const heroY = -heroProgress * 100;
-
-    // Animate work section. Starts appearing as hero fades.
-    const workProgress = Math.max(0, scrollProgress / 0.20);
-    const workOpacity = Math.min(1, workProgress);
-    const workY = Math.max(0, 50 - workProgress * 50);
-
-    // Animate border. Fades out, scales up, and moves down as user starts scrolling.
-    const borderProgress = Math.min(1, scrollProgress / 0.1); // Animation completes over first 10% of scroll
-    const borderOpacity = 1 - borderProgress;
-    const borderScale = 1 + borderProgress * 0.2; // Scales up by 20%
-    const borderY = borderProgress * 50; // Moves down 50px
-
     return (
         <main className="h-screen w-screen bg-black text-white overflow-hidden p-8">
             <IntroAnimation animationStage={animationStage} />
@@ -168,11 +207,11 @@ const App: React.FC = () => {
                 <div className="relative w-full h-full">
                     {/* Animated Border */}
                     <div
+                        ref={borderRef}
                         className="absolute inset-0 border-2 border-yellow-400 rounded-[40px] pointer-events-none"
                         style={{
-                            opacity: borderOpacity,
-                            transform: `translateY(${borderY}px) scale(${borderScale})`,
                             willChange: 'transform, opacity',
+                            // Initial styles set via JS on mount/scroll
                         }}
                     />
 
@@ -213,18 +252,18 @@ const App: React.FC = () => {
                             AND INTELLIGENT AI SOLUTIONS.
                         </p>
                         <Footer />
-                        <Ruler scrollProgress={scrollProgress} />
+                        <ScrollAwareRuler scrollContainerRef={scrollContainerRef} />
 
                         <div className="relative w-full">
                             <section
+                                ref={heroRef}
                                 className="h-screen sticky top-0 flex flex-col justify-center items-center"
-                                style={{ opacity: heroOpacity, pointerEvents: heroOpacity > 0 ? 'auto' : 'none' }}
+                            // Styles handled by Direct DOM manipulation in useEffect
                             >
                                 <div
+                                    ref={heroContentRef}
                                     className="text-center transition-transform duration-300 ease-out relative"
-                                    style={{
-                                        transform: `translateY(${heroY}px) scale(${heroScale})`,
-                                    }}
+                                // Styles handled by Direct DOM manipulation in useEffect
                                 >
                                     <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">AMANSINGH</h2>
                                     <h1 className="font-anton text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
@@ -253,11 +292,9 @@ const App: React.FC = () => {
                                 className="relative z-10"
                             >
                                 <div
+                                    ref={workRef}
                                     className="w-full"
-                                    style={{
-                                        opacity: workOpacity,
-                                        transform: `translateY(${workY}vh)`
-                                    }}
+                                // Styles handled by Direct DOM manipulation in useEffect
                                 >
                                     <div id="about">
                                         {animationStage === 2 && <About scrollContainerRef={scrollContainerRef} />}

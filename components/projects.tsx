@@ -249,30 +249,64 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    let headingTop = 0;
+    let headingHeight = 0;
+    let viewportHeight = 0;
+    let rafId: number;
+
+    const updateMetrics = () => {
+      if (headingSectionRef.current) {
+        const rect = headingSectionRef.current.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        headingTop = rect.top - containerRect.top + container.scrollTop;
+        headingHeight = headingSectionRef.current.offsetHeight;
+        viewportHeight = container.clientHeight;
+      }
+    };
+
     const handleScroll = () => {
       if (!headingSectionRef.current) return;
-      const rect = headingSectionRef.current.getBoundingClientRect();
-      const viewportHeight = container.clientHeight;
 
-      const start = rect.top + container.scrollTop;
-      const end = start + headingSectionRef.current.offsetHeight - viewportHeight;
-      const current = container.scrollTop;
+      const currentScroll = container.scrollTop;
+      const start = headingTop; // When section top hits viewport top (conceptually)
+      // Original logic used: start = rect.top + container.scrollTop
+      // rect.top is relative to viewport. rect.top + scrollTop IS basically offsetTop relative to container (if cached).
+
+      // Wait, original logic:
+      // const rect = headingSectionRef.current.getBoundingClientRect();
+      // const start = rect.top + container.scrollTop;
+      // This 'start' variable in original code seems to recalculate 'offsetTop' every time.
+      // It effectively meant "absolute Y position of the element in the scrollable document".
+
+      const end = start + headingHeight - viewportHeight;
 
       let progress = 0;
-      if (current >= start && current <= end) {
-        progress = (current - start) / (end - start);
-      } else if (current > end) {
+      if (currentScroll >= start && currentScroll <= end) {
+        progress = (currentScroll - start) / (end - start);
+      } else if (currentScroll > end) {
         progress = 1;
       }
 
-      setScrollProgress(Math.min(Math.max(progress, 0), 1));
+      // Throttling state updates with rAF
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setScrollProgress(Math.min(Math.max(progress, 0), 1));
+      });
     };
 
+    // Initialize
+    updateMetrics();
+
     container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateMetrics);
+
+    // Initial check
     handleScroll();
 
     return () => {
       if (container) container.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateMetrics);
+      cancelAnimationFrame(rafId);
     };
   }, [scrollContainerRef]);
 

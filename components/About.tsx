@@ -12,34 +12,58 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      if (!sectionRef.current || !cardRef.current) return;
+    // Cache metrics to avoid layout thrashing
+    let sectionTop = 0;
+    let sectionHeight = 0;
+    let viewportHeight = 0;
 
-      const { top, height } = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = container.clientHeight;
+    const updateMetrics = () => {
+      if (sectionRef.current) {
+        // Calculate top relative to the scroll container
+        const rect = sectionRef.current.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        sectionTop = rect.top - containerRect.top + container.scrollTop;
+        sectionHeight = rect.height;
+        viewportHeight = container.clientHeight;
 
-      // Progress of scrolling through the section.
-      // 0 = section top at viewport top. 1 = section fully scrolled through.
-      const progress = Math.max(0, Math.min(1, -top / (height - viewportHeight)));
-
-      // Animate card during the scroll
-      const cardProgress = Math.min(1, progress * 4);
-      const translateY = 150 * (1 - cardProgress);
-      const opacity = cardProgress;
-
-      if (cardRef.current) {
-        cardRef.current.style.transform = `perspective(1000px) translateY(${translateY}px)`;
-        cardRef.current.style.opacity = `${opacity}`;
+        // Force an update after metrics change
+        handleScroll();
       }
     };
 
+    const handleScroll = () => {
+      if (!sectionRef.current || !cardRef.current) return;
+
+      const currentScroll = container.scrollTop;
+      // Derived current 'top' relative to viewport
+      const currentTop = sectionTop - currentScroll;
+
+      // Progress calculation
+      const progress = Math.max(0, Math.min(1, -currentTop / (sectionHeight - viewportHeight)));
+
+      // Animate card during the scroll using requestAnimationFrame
+      requestAnimationFrame(() => {
+        if (!cardRef.current) return;
+        const cardProgress = Math.min(1, progress * 4);
+        const translateY = 150 * (1 - cardProgress);
+        const opacity = cardProgress;
+
+        cardRef.current.style.transform = `perspective(1000px) translateY(${translateY}px)`;
+        cardRef.current.style.opacity = `${opacity}`;
+      });
+    };
+
+    // Initial measurement
+    updateMetrics();
+
     container.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
+    window.addEventListener('resize', updateMetrics);
 
     return () => {
       if (container) {
         container.removeEventListener('scroll', handleScroll);
       }
+      window.removeEventListener('resize', updateMetrics);
     };
   }, [scrollContainerRef]);
 
