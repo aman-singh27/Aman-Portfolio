@@ -35,12 +35,12 @@ const Cursor: React.FC = () => {
 
     return (
         <>
-            <div 
-                className="fixed top-0 left-0 rounded-full border-2 border-white pointer-events-none transition-all duration-300 ease-out z-50 mix-blend-difference"
+            <div
+                className="fixed top-0 left-0 rounded-full border-2 border-white pointer-events-none transition-all duration-300 ease-out z-[100] mix-blend-difference"
                 style={outerStyle}
             />
-            <div 
-                className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-50 mix-blend-difference"
+            <div
+                className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference"
                 style={innerStyle}
             />
         </>

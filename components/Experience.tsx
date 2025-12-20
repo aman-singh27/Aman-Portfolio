@@ -3,71 +3,92 @@ import React, { useState } from "react";
 // Brand data with logos and descriptions
 const brands = [
   {
-    name: "Logitech G",
+    name: "Tenary",
+    role: "Founder & Automation Engineer",
+    date: "May 2025 – Present",
     logo: (
       <svg className="w-full h-auto" viewBox="0 0 200 80" fill="currentColor">
         <text
-          x="10"
-          y="50"
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
           fontSize="32"
           fontWeight="600"
           fontFamily="system-ui"
         >
-          logitech G
+          Tenary
         </text>
       </svg>
     ),
     description:
-      "Designed innovative gaming interfaces and brand materials for Logitech G's premier gaming peripherals.",
+      "Founded an AI automation startup engineeering end-to-end pipelines with n8n and LLMs. Reduced client manual effort by 70% while leading technical strategy and product development.",
   },
   {
-    name: "Vogue",
+    name: "CampusHub",
+    role: "Full-Stack Developer",
+    date: "Feb 2025 – Present",
     logo: (
       <svg className="w-full h-auto" viewBox="0 0 200 80" fill="currentColor">
         <text
-          x="20"
-          y="55"
-          fontSize="48"
-          fontWeight="400"
-          fontFamily="serif"
-          letterSpacing="8"
-        >
-          VOGUE
-        </text>
-      </svg>
-    ),
-    description:
-      "Created sleek, fashion-forward digital marketing campaigns that reflected Vogue's luxury and prestige.",
-  },
-  {
-    name: "Squad",
-    logo: (
-      <svg className="w-full h-auto" viewBox="0 0 200 80" fill="currentColor">
-        <text
-          x="30"
-          y="50"
-          fontSize="36"
-          fontWeight="700"
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fontSize="28"
+          fontWeight="600"
           fontFamily="system-ui"
         >
-          squad
+          CampusHub
         </text>
       </svg>
     ),
     description:
-      "Developed dynamic brand identity and user experiences for Squad's collaborative platform.",
+      "Building a unified student platform with Firebase and React. Implemented RBAC, real-time dashboards, and a scalable design system for campus-wide event management.",
   },
   {
-    name: "Condé Nast",
+    name: "AmanStar IT",
+    role: "Frontend Engineer",
+    date: "Jun 2025",
     logo: (
       <svg className="w-full h-auto" viewBox="0 0 200 80" fill="currentColor">
-        <text x="10" y="50" fontSize="28" fontWeight="500" fontFamily="serif">
-          CONDÉ NAST
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fontSize="28"
+          fontWeight="600"
+          fontFamily="system-ui"
+        >
+          AmanStar IT
         </text>
       </svg>
     ),
     description:
-      "Crafted premium editorial designs and digital experiences for Condé Nast's prestigious publications.",
+      "Developed a production-grade e-commerce platform using React and MongoDB. Optimized UI/UX flows to improve task efficiency by 40% and integrated WhatsApp ordering.",
+  },
+  {
+    name: "Tiaro",
+    role: "UI/UX Designer",
+    date: "2024",
+    logo: (
+      <svg className="w-full h-auto" viewBox="0 0 200 80" fill="currentColor">
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fontSize="36"
+          fontWeight="600"
+          fontFamily="system-ui"
+        >
+          Tiaro
+        </text>
+      </svg>
+    ),
+    description:
+      "Designed application mockups and user flows for a carpooling platform. Improved usability, visual hierarchy, and overall experience through iterative refinements.",
   },
 ];
 
@@ -91,8 +112,7 @@ const Experience: React.FC = () => {
           </h2>
 
           <p className="text-gray-400 text-base md:text-lg max-w-md text-left md:text-right leading-relaxed">
-            A selection of collaborations with leading brands, showcasing my
-            creative impact and professional growth.
+            A timeline of building impactful projects, solving complex problems, and mastering new technologies.
           </p>
         </div>
 
@@ -113,7 +133,7 @@ const Experience: React.FC = () => {
               }}
             >
               <div
-                className="relative bg-[#0a0a0a] rounded-[32px] p-8 flex flex-col items-center justify-center min-h-[280px] transition-all duration-500"
+                className="relative bg-[#0a0a0a] rounded-[32px] p-5 flex flex-col items-center justify-center min-h-[240px] transition-all duration-500"
                 style={{
                   border: "2px dashed rgba(255, 255, 255, 0.2)",
                   boxShadow:
@@ -124,7 +144,7 @@ const Experience: React.FC = () => {
               >
                 {/* Logo */}
                 <div
-                  className="w-full flex items-center justify-center mb-6 transition-all duration-500"
+                  className="w-full flex items-center justify-center mb-4 transition-all duration-500"
                   style={{
                     color: hoveredIndex === index ? "#ffffff" : "#666666",
                     opacity:
@@ -138,9 +158,23 @@ const Experience: React.FC = () => {
                   {brand.logo}
                 </div>
 
+                {/* Role & Date - Only visible on hover */}
+                <div
+                  className="flex flex-col items-center mb-2 transition-all duration-500"
+                  style={{
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    transform: hoveredIndex === index ? "translateY(0)" : "translateY(10px)",
+                    height: hoveredIndex === index ? "auto" : "0px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <span className="text-xs font-bold text-yellow-400 tracking-wider uppercase mb-1">{brand.role}</span>
+                  <span className="text-[10px] text-gray-500 font-mono">{brand.date}</span>
+                </div>
+
                 {/* Yellow Dot - Only visible on hover */}
                 <div
-                  className="w-2 h-2 bg-yellow-400 rounded-full mb-4 transition-all duration-500"
+                  className="w-2 h-2 bg-yellow-400 rounded-full mb-2 transition-all duration-500"
                   style={{
                     opacity: hoveredIndex === index ? 1 : 0,
                     transform: hoveredIndex === index ? "scale(1)" : "scale(0)",
@@ -149,7 +183,7 @@ const Experience: React.FC = () => {
 
                 {/* Description - Only visible on hover */}
                 <div
-                  className="text-center text-sm text-gray-300 leading-relaxed px-4 transition-all duration-500"
+                  className="text-center text-sm text-gray-300 leading-snug px-2 transition-all duration-500"
                   style={{
                     opacity: hoveredIndex === index ? 1 : 0,
                     transform:

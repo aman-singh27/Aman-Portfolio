@@ -8,11 +8,43 @@ import IntroAnimation from './components/IntroAnimation';
 import About from './components/About';
 import Experience from './components/Experience';
 import Education from './components/Education';
-import Certificates from './components/Certificates';
+import AcademicLog from './components/AcademicLog';
+
 import SectionDifferentiator from './components/SectionDifferentiator';
 import Projects from './components/projects';
 import SkillScroll from './components/SkillScroll';
+import StaggeredMenu from './components/StaggeredMenu';
 import Contact from './components/Contact';
+
+const menuItems = [
+    { label: 'Home', ariaLabel: 'Go to home page', link: '#content-start' },
+    { label: 'About', ariaLabel: 'Learn about us', link: '#about' },
+    { label: 'Projects', ariaLabel: 'View our projects', link: '#work' },
+    { label: 'Experience', ariaLabel: 'View experience', link: '#experience' },
+    { label: 'Education', ariaLabel: 'View education', link: '#education' },
+    { label: 'Skills', ariaLabel: 'View skills', link: '#skills' },
+    { label: 'Contact', ariaLabel: 'Get in touch', link: '#contact' }
+];
+
+const socialItems = [
+    { label: 'LinkedIn', link: 'https://www.linkedin.com/in/aman-singh-401a48306' },
+    { label: 'GitHub', link: 'https://github.com/aman-singh27' },
+    { label: 'Instagram', link: 'https://www.instagram.com/_singh.amannn_/' }
+];
+
+// MANUAL SCROLL OFFSETS
+// Adjust these values to fine-tune where each section lands.
+// Negative values move the section LOWER (show more of the top).
+// Positive values move the section HIGHER.
+const sectionOffsets: { [key: string]: number } = {
+    'content-start': -815,
+    'about': 1773,
+    'work': 6245,      // Projects
+    'experience': 912,
+    'education': 970,
+    'skills': 820,
+    'contact': 878
+};
 
 const App: React.FC = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -53,6 +85,7 @@ const App: React.FC = () => {
             const totalScrollableHeight = scrollHeight - clientHeight;
             const currentProgress = totalScrollableHeight > 0 ? scrollTop / totalScrollableHeight : 0;
             setScrollProgress(currentProgress);
+
         }
     };
 
@@ -80,7 +113,9 @@ const App: React.FC = () => {
 
                     if (targetElement) {
                         const container = scrollContainerRef.current;
-                        const targetTop = targetElement.offsetTop - container.offsetTop;
+                        // Get the manual offset for this section, or default to -50
+                        const manualOffset = sectionOffsets[targetId] !== undefined ? sectionOffsets[targetId] : -50;
+                        const targetTop = targetElement.offsetTop - container.offsetTop + manualOffset;
 
                         container.scrollTo({
                             top: targetTop,
@@ -128,6 +163,8 @@ const App: React.FC = () => {
                 }}
             >
                 <Cursor />
+
+
                 <div className="relative w-full h-full">
                     {/* Animated Border */}
                     <div
@@ -138,6 +175,22 @@ const App: React.FC = () => {
                             willChange: 'transform, opacity',
                         }}
                     />
+
+                    <div className="absolute top-0 left-0 w-full h-full z-50 pointer-events-none">
+                        <StaggeredMenu
+                            position="right"
+                            items={menuItems}
+                            socialItems={socialItems}
+                            displaySocials={true}
+                            displayItemNumbering={true}
+                            menuButtonColor="#fff"
+                            openMenuButtonColor="#fff"
+                            changeMenuColorOnOpen={true}
+                            colors={['#FFD400', '#1a1a1a']}
+                            logoUrl=""
+                            accentColor="#FFD400"
+                        />
+                    </div>
 
                     <div
                         ref={scrollContainerRef}
@@ -155,9 +208,9 @@ const App: React.FC = () => {
 
                         <Header />
                         <p className="absolute top-[7rem] left-1/2 -translate-x-1/2 text-center text-xs uppercase text-gray-400 tracking-[0.2em] w-full max-w-4xl z-10 leading-relaxed">
-                            I CREATE VIBRANT AND COLORFUL DIGITAL EXPERIENCES THAT ARE
+                            BUILDING SCALABLE FULL-STACK APPLICATIONS
                             <br />
-                            AS PRACTICAL AS THEY ARE IMPACTFUL.
+                            AND INTELLIGENT AI SOLUTIONS.
                         </p>
                         <Footer />
                         <Ruler scrollProgress={scrollProgress} />
@@ -173,7 +226,7 @@ const App: React.FC = () => {
                                         transform: `translateY(${heroY}px) scale(${heroScale})`,
                                     }}
                                 >
-                                    <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">DUMEMEARTS</h2>
+                                    <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">AMANSINGH</h2>
                                     <h1 className="font-anton text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
                                         AMAN SINGH
                                     </h1>
@@ -181,7 +234,7 @@ const App: React.FC = () => {
                                     <div
                                         className="absolute left-1/2 -translate-x-1/2 bottom-[-350px] translate-y-1/2 pointer-events-none z-10"
                                     >
-                                        <Globe width={1000} height={1000} />
+                                        {animationStage === 2 && <Globe width={1000} height={1000} />}
                                     </div>
                                     <a
                                         href="#content-start"
@@ -206,19 +259,32 @@ const App: React.FC = () => {
                                         transform: `translateY(${workY}vh)`
                                     }}
                                 >
-                                    <About scrollContainerRef={scrollContainerRef} />
+                                    <div id="about">
+                                        {animationStage === 2 && <About scrollContainerRef={scrollContainerRef} />}
+                                    </div>
                                     <SectionDifferentiator scrollContainerRef={scrollContainerRef} />
                                     <div className="bg-white text-black">
-                                        <div className="bg-yellow-400 relative">
+                                        <div className="bg-yellow-400 relative" id="work">
                                             <div className="absolute top-[40px] left-[40px] right-[40px] bottom-0 border-x-[2px] border-t-[2px] border-black rounded-t-[40px] pointer-events-none z-10" />
-                                            <Projects scrollContainerRef={scrollContainerRef} />
+                                            {animationStage === 2 && <Projects scrollContainerRef={scrollContainerRef} />}
                                         </div>
-                                        <Experience />
-                                        <Education />
-                                        <Certificates />
+                                        <div id="experience">
+                                            {animationStage === 2 && <Experience />}
+                                        </div>
+                                        {/* Removed duplicate Experience block if present - assuming previous file view showed two */}
+                                        <div id="education">
+                                            {animationStage === 2 && <AcademicLog scrollContainerRef={scrollContainerRef} />}
+                                        </div>
                                     </div>
-                                    <SkillScroll />
-                                    <Contact />
+
+                                    <div id="skills">
+                                        {animationStage === 2 && <SkillScroll />}
+                                    </div>
+                                    <SectionDifferentiator scrollContainerRef={scrollContainerRef} />
+
+                                    <div id="contact">
+                                        {animationStage === 2 && <Contact />}
+                                    </div>
                                 </div>
                             </section>
                         </div>

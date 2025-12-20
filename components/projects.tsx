@@ -140,28 +140,28 @@ const WebflowGraphic = () => (
 // --- Project Data ---
 const projects = [
   {
-    tag: 'MOBILE / WEB APPS',
-    title: 'Product Design',
+    tag: 'HEALTH TECH',
+    title: 'MedVault',
     description:
-      'Focused on creating practical, user-friendly designs that prioritize functionality and deliver smooth, engaging experiences.',
+      'A secure digital health platform featuring role-based access, consent-driven record visibility, and compliant document storage. Engineered for privacy and scalability with comprehensive frontend and backend workflows.',
     graphic: <ProductDesignGraphic />,
-    link: '#',
+    link: 'https://github.com/aman-singh27/Med_Vault.git',
   },
   {
-    tag: 'FIGMA DESIGN',
-    title: 'Web Design',
+    tag: 'AI SECURITY',
+    title: 'VoiceGuard',
     description:
-      'Skilled in designing responsive, user-friendly websites by using Figma to create pixel-perfect landing pages.',
+      'AI-powered voice authentication system aimed at fraud detection. Implements biometric identity verification, anomaly detection logic, and real-time security workflows.',
     graphic: <WebDesignGraphic />,
-    link: '#',
+    link: 'https://voice-ruby-eta.vercel.app/',
   },
   {
-    tag: 'WEB DEVELOPMENT',
-    title: 'Webflow',
+    tag: 'DATA ENGINEERING',
+    title: 'Twitter (X) Content Scraper',
     description:
-      'Proficient in the use of Webflow to build functional, visually engaging websites efficiently, without-compromising quality.',
+      'Structured extraction tool for public tweets and threads. Features scalable data ingestion, rate-limit handling, and a clean interface to organize content for analysis.',
     graphic: <WebflowGraphic />,
-    link: '#',
+    link: 'https://github.com/aman-singh27/twitter-scraper.git',
   },
 ];
 
@@ -187,19 +187,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         filter: isVisible ? 'blur(0px)' : 'blur(10px)',
       }}
     >
-      <div className="w-96 h-[580px] bg-black rounded-[40px] border-2 border-gray-800 shadow-2xl overflow-hidden flex flex-col relative group">
+      <div className="w-80 h-[480px] bg-black rounded-[40px] border-2 border-gray-800 shadow-2xl overflow-hidden flex flex-col relative group">
         {/* Glow effect on hover */}
         <div className="absolute inset-0 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-transparent to-yellow-400/10 rounded-[40px]"></div>
         </div>
-        
+
         {/* Content */}
-        <div className="p-8 flex-grow flex flex-col justify-between z-10 relative">
+        <div className="p-6 flex-grow flex flex-col justify-between z-10 relative">
           <div>
             <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-gray-800 to-gray-900 text-yellow-400 text-[10px] font-bold rounded-full uppercase tracking-widest border border-gray-700">
               {project.tag}
             </span>
-            <h3 className="text-white text-3xl font-bold mt-5 tracking-tight">
+            <h3 className="text-white text-2xl font-bold mt-4 tracking-tight">
               {project.title}
             </h3>
             <p className="text-gray-400 text-base mt-3 leading-relaxed">
@@ -220,10 +220,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="absolute bottom-0 left-0 w-full h-1/2 opacity-20 z-0">
           {project.graphic}
         </div>
-        
+
         {/* Subtle gradient overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/[0.03] via-transparent to-black/20 rounded-[40px] z-0 pointer-events-none"></div>
-        
+
         {/* Border glow */}
         <div className="absolute inset-0 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
           <div className="absolute inset-0 rounded-[40px] border-2 border-yellow-400/30"></div>
@@ -235,7 +235,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
 // --- Main App Component ---
 interface ProjectsProps {
-    scrollContainerRef: React.RefObject<HTMLDivElement>;
+  scrollContainerRef: React.RefObject<HTMLDivElement>;
 }
 
 const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
@@ -331,28 +331,32 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
     titleMaskGradient = `linear-gradient(to right, transparent, transparent)`;
   }
 
-  // Subtitle animation
-  const subtitle = 'A blend of creative design, strategic thinking, and technical skills';
-  const words = subtitle.split(' ');
+  // Subtitle animation - split into two lines
+  const subtitleLine1 = 'Engineering robust solutions';
+  const subtitleLine2 = 'with modern tech stacks and intelligent automation';
   let subtitleTranslateY = 0;
 
-  const getWordMaskGradient = (wordIndex: number) => {
+  const getLineMaskGradient = (lineNumber: 1 | 2) => {
     if (scrollProgress < subtitleRevealStart) {
       return 'linear-gradient(to right, transparent, transparent)';
     }
-    
-    const totalWords = words.length;
+
     const revealDuration = subtitleRevealEnd - subtitleRevealStart;
-    const timePerWord = revealDuration / totalWords;
-    
-    const wordStartTime = subtitleRevealStart + (wordIndex * timePerWord);
-    const wordEndTime = wordStartTime + timePerWord;
-    
-    if (scrollProgress < wordStartTime) {
+    const halfDuration = revealDuration / 2;
+
+    // Line 1 animates in first half, Line 2 in second half
+    const lineStartTime = lineNumber === 1
+      ? subtitleRevealStart
+      : subtitleRevealStart + halfDuration;
+    const lineEndTime = lineNumber === 1
+      ? subtitleRevealStart + halfDuration
+      : subtitleRevealEnd;
+
+    if (scrollProgress < lineStartTime) {
       return 'linear-gradient(to right, transparent, transparent)';
-    } else if (scrollProgress >= wordStartTime && scrollProgress <= wordEndTime) {
-      const wordProgress = (scrollProgress - wordStartTime) / timePerWord;
-      const eased = 1 - Math.pow(1 - wordProgress, 3);
+    } else if (scrollProgress >= lineStartTime && scrollProgress <= lineEndTime) {
+      const lineProgress = (scrollProgress - lineStartTime) / halfDuration;
+      const eased = 1 - Math.pow(1 - lineProgress, 3);
       const visibleStop = eased * (100 + subtitleGradientWidth) - subtitleGradientWidth;
       const transparentStop = eased * (100 + subtitleGradientWidth);
       return `linear-gradient(to right, black ${visibleStop}%, transparent ${transparentStop}%)`;
@@ -390,27 +394,29 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
               transform: `translateY(${subtitleTranslateY}vh)`,
             }}
           >
-            <p
-              className="text-[3.5vw] text-black leading-tight"
+            <div className="text-[3.5vw] text-black leading-tight"
               style={{
                 fontFamily: 'system-ui, -apple-system, sans-serif',
                 fontWeight: 300,
               }}
             >
-              {words.map((word, index) => (
-                <span
-                  key={index}
-                  style={{
-                    maskImage: getWordMaskGradient(index),
-                    WebkitMaskImage: getWordMaskGradient(index),
-                    display: 'inline-block',
-                    marginRight: '0.3em',
-                  }}
-                >
-                  {word}
-                </span>
-              ))}
-            </p>
+              <p
+                style={{
+                  maskImage: getLineMaskGradient(1),
+                  WebkitMaskImage: getLineMaskGradient(1),
+                }}
+              >
+                {subtitleLine1}
+              </p>
+              <p
+                style={{
+                  maskImage: getLineMaskGradient(2),
+                  WebkitMaskImage: getLineMaskGradient(2),
+                }}
+              >
+                {subtitleLine2}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -419,11 +425,11 @@ const Projects: React.FC<ProjectsProps> = ({ scrollContainerRef }) => {
       <div className="bg-gradient-to-b from-yellow-400 via-yellow-400 via-30% to-black text-white relative overflow-hidden">
         {/* Spacer for subtitle transition */}
         <div className="h-96"></div>
-        
+
         {/* Projects Cards */}
         <div ref={cardsSectionRef} className="pt-64 pb-64">
           <div className="container mx-auto px-4 text-center">
-            <div className="relative w-full max-w-7xl mx-auto h-[650px] flex items-center justify-center gap-10">
+            <div className="relative w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-10 items-center justify-center">
               <ProjectCard
                 project={projects[0]}
                 isVisible={isCardsVisible}
