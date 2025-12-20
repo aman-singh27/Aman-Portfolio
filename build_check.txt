@@ -1,0 +1,39 @@
+
+> digital-designer-portfolio@0.0.0 build
+> vite build
+
+[36mvite v6.4.1 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 1194 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                                                    [39m[1m[2m    2.65 kB[22m[1m[22m[2m │ gzip:   0.97 kB[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_r8e24vr8e24vr8e2-DbWicyPm.webp  [39m[1m[2m  133.03 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_e4cwn6e4cwn6e4cw-le59xAUX.webp  [39m[1m[2m  140.16 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_65mfsk65mfsk65mf-DveuOU5i.webp  [39m[1m[2m  193.80 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_su0zz5su0zz5su0z-De3481dP.webp  [39m[1m[2m  276.95 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_akcjxuakcjxuakcj-PUkTe5cX.webp  [39m[1m[2m  536.13 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_cn5ec8cn5ec8cn5e-Bs6LkIjU.webp  [39m[1m[2m  591.97 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_43yuo343yuo343yu-hIS77IkK.webp  [39m[1m[2m  654.72 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_m7id1am7id1am7id-Df1NUq8T.webp  [39m[1m[2m  656.78 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_7skafy7skafy7ska-C1GrEwBN.webp  [39m[1m[2m  695.54 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_3dt4lu3dt4lu3dt4-D_DXyDwH.webp  [39m[1m[2m  708.58 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_95a45h95a45h95a4-C-_g_aKo.webp  [39m[1m[2m  738.63 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_q7mvdjq7mvdjq7mv-DGFuiQee.webp  [39m[1m[2m  740.06 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_c883szc883szc883-CF9sWd6B.webp  [39m[1m[2m  741.85 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_e0m314e0m314e0m3-Kr3tI-n_.webp  [39m[1m[2m  810.73 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_fdi950fdi950fdi9-DYB62yeA.webp  [39m[1m[2m  844.77 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_vphw87vphw87vphw-hSxpWGCR.webp  [39m[1m[2m  864.81 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_n8xge3n8xge3n8xg-ziHEMf1G.webp  [39m[1m[2m  879.95 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_r65rhgr65rhgr65r-DNk4zP2L.webp  [39m[1m[2m  927.08 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_1et68r1et68r1et6-BN6mXABC.webp  [39m[1m[2m  939.81 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_s3c1dls3c1dls3c1-Dom4bfeN.webp  [39m[1m[2m1,074.64 kB[22m[1m[22m
+[2mdist/[22m[32massets/Gemini_Generated_Image_i2wl13i2wl13i2wl-B3Y_36ce.webp  [39m[1m[2m1,096.11 kB[22m[1m[22m
+[2mdist/[22m[35massets/index-DGYvKMpx.css                                     [39m[1m[2m   38.14 kB[22m[1m[22m[2m │ gzip:   7.17 kB[22m
+[2mdist/[22m[36massets/index-CLPqQkPu.js                                      [39m[1m[33m1,622.18 kB[39m[22m[2m │ gzip: 496.00 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 32.44s[39m
