@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import amanProfile from '../src/images/aman-profile.png';
 
 interface AboutProps {
   scrollContainerRef: React.RefObject<HTMLDivElement>;
@@ -120,7 +121,7 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
                   With a strong foundation in Computer Science and modern web technologies, I specialize in building robust SaaS applications and AI-driven workflows. I combine technical depth with product thinking to create solutions that are scalable, secure, and user-centric.
                 </p>
                 <a
-                  href="/src/Aman_s_Resume _Updated.pdf"
+                  href="/Aman_Singh_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="cursor-pointer inline-flex items-center gap-3 bg-black border border-black rounded-full px-5 py-3 text-white hover:bg-gray-800 transition-colors group"
@@ -137,7 +138,7 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
               <div className="relative w-full max-w-[250px] mx-auto md:mr-0">
                 <div className="relative">
                   <img
-                    src="/src/images/aman-profile.png"
+                    src={amanProfile}
                     alt="Portrait of the designer"
                     className="w-full h-auto filter grayscale"
                   />
