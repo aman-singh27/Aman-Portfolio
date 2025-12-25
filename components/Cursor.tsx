@@ -6,7 +6,11 @@ const Cursor: React.FC = () => {
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // Use pageX/pageY instead of clientX/clientY to account for scroll
+            setPosition({
+                x: e.clientX + window.scrollX,
+                y: e.clientY + window.scrollY
+            });
             const target = e.target as HTMLElement;
             if (target.closest('.cursor-pointer')) {
                 setIsHovering(true);
@@ -24,23 +28,31 @@ const Cursor: React.FC = () => {
 
     const outerSize = isHovering ? 60 : 30;
     const outerStyle = {
-        transform: `translate(calc(${position.x}px - 50%), calc(${position.y}px - 50%))`,
+        left: `${position.x}px`,
+        top: `${position.y}px`,
         width: `${outerSize}px`,
         height: `${outerSize}px`,
+        transform: `translate(-50%, -50%)`,
+        marginLeft: '0',
+        marginTop: '0',
     };
 
     const innerStyle = {
-        transform: `translate(calc(${position.x}px - 50%), calc(${position.y}px - 50%))`
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        transform: `translate(-50%, -50%)`,
+        marginLeft: '0',
+        marginTop: '0',
     };
 
     return (
         <>
             <div
-                className="fixed top-0 left-0 rounded-full border-2 border-white pointer-events-none transition-all duration-300 ease-out z-[100] mix-blend-difference"
+                className="fixed rounded-full border-2 border-white pointer-events-none transition-all duration-300 ease-out z-[100] mix-blend-difference"
                 style={outerStyle}
             />
             <div
-                className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference"
+                className="fixed w-2 h-2 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference"
                 style={innerStyle}
             />
         </>
