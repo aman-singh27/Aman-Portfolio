@@ -101,7 +101,7 @@ const Experience: React.FC = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-8">
           <h2
-            className="text-[80px] md:text-[120px] lg:text-[140px] leading-none font-light tracking-tight"
+            className="text-[50px] md:text-[80px] lg:text-[100px] leading-none font-light tracking-tight"
             style={{
               fontFamily: "serif",
               transform: "scaleY(1.2) scaleX(0.85)",

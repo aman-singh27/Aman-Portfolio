@@ -82,10 +82,10 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
           className="relative w-full bg-white text-black overflow-hidden z-10 border border-black"
           style={{ willChange: 'transform, opacity', opacity: 0 }}
         >
-          <div className="max-w-7xl mx-auto p-12 md:p-24">
+          <div className="max-w-7xl mx-auto p-8 md:p-12 lg:p-20">
             <div className="relative z-10">
-              <div className="flex justify-between items-stretch mb-8 flex-wrap">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light leading-tight max-w-4xl">
+              <div className="flex justify-between items-stretch mb-6 md:mb-8 flex-wrap">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light leading-tight max-w-4xl">
                   Hello! I’m Aman,
                   <br />
                   a full-stack developer
@@ -112,10 +112,10 @@ const About: React.FC<AboutProps> = ({ scrollContainerRef }) => {
 
             </div>
 
-            <hr className="border-t border-gray-300 my-12 relative z-10" />
+            <hr className="border-t border-gray-300 my-8 md:my-10 relative z-10" />
 
-            <div className="grid md:grid-cols-2 gap-12 items-end relative z-10">
-              <div className="space-y-8 mb-24">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-end relative z-10">
+              <div className="space-y-6 mb-12">
                 <p className="text-sm md:text-base text-gray-700 leading-relaxed">
                   With a strong foundation in Computer Science and modern web technologies, I specialize in building robust SaaS applications and AI-driven workflows. I combine technical depth with product thinking to create solutions that are scalable, secure, and user-centric.
                 </p>

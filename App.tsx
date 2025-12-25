@@ -65,6 +65,8 @@ const ScrollAwareRuler: React.FC<{ scrollContainerRef: React.RefObject<HTMLDivEl
     return <Ruler scrollProgress={scrollProgress} />;
 };
 
+import MobileBlocker from './components/MobileBlocker';
+
 const App: React.FC = () => {
     // Removed scrollProgress state to prevent re-renders
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -190,7 +192,8 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <main className="h-screen w-screen bg-black text-white overflow-hidden p-8">
+        <main className="h-[100dvh] w-full bg-black text-white overflow-hidden p-4 md:p-8">
+            <MobileBlocker />
             <IntroAnimation animationStage={animationStage} />
             <div
                 className="w-full h-full"
@@ -265,8 +268,8 @@ const App: React.FC = () => {
                                     className="text-center transition-transform duration-300 ease-out relative"
                                 // Styles handled by Direct DOM manipulation in useEffect
                                 >
-                                    <h2 className="text-4xl font-bold tracking-widest mb-2 relative z-20">AMANSINGH</h2>
-                                    <h1 className="font-anton text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
+                                    <h2 className="text-2xl md:text-4xl font-bold tracking-widest mb-2 relative z-20">AMANSINGH</h2>
+                                    <h1 className="font-anton text-[15vw] md:text-[230px] leading-none text-yellow-400 relative z-0" style={{ textShadow: '4px 4px 0 #000', transform: 'scaleX(0.75)' }}>
                                         AMAN SINGH
                                     </h1>
                                     {/* this is sphere positio */}
@@ -326,9 +329,9 @@ const App: React.FC = () => {
                             </section>
                         </div>
                     </div>
-                </div>
-            </div>
-        </main>
+                </div >
+            </div >
+        </main >
     );
 };
 

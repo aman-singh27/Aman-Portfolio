@@ -1,16 +1,11 @@
-    overflow-x: hidden;
-    /* User requested 80% scale on open */
-    zoom: 0.8;
-    /* Fallback for Firefox which doesn't support zoom */
-    -moz-transform: scale(0.8);
-    -moz-transform-origin: top center;
-    width: 100%;
-    }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-    /* Fix for Firefox to ensure full width/height when scaled */
-    @supports (-moz-appearance:none) {
-        body {
-            width: 125%;
-            height: 125%;
-        }
-    }
+/* Custom Reset/Base if needed, but Tailwind handles most */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
