@@ -1,20 +1,25 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+<p align="center"><img src="assets/github-cover.svg" alt="Aman Singh — Engineering, with intention." width="100%" /></p>
 
-# Run and deploy your AI Studio app
+# Aman Singh
 
-This contains everything you need to run your app locally.
+My personal portfolio, pairing motion-led storytelling with scoped project case studies and an accessible responsive interface.
 
-View your app in AI Studio: https://ai.studio/apps/drive/10y7O4nE5PwcCajQKY0oH3oq_UDaVWAEH
+**React / TypeScript / GSAP / Vite**
 
-## Run Locally
+## What is included
 
-**Prerequisites:**  Node.js
+Includes the current project collection, experience, filters, project dialogs and resume download. This GitHub refresh publishes the current working source while retaining the repository's private visibility.
 
+## Local setup
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Run `npm ci`, `npm run typecheck` and `npm run build`. Use `npm run dev` for local development. The static output is written to `dist/`.
+
+## Source and configuration
+
+This repository is a source release. Local credentials, session cookies, personal records, databases, dependency directories and generated build files are excluded. See [SECURITY.md](SECURITY.md) before configuring integrations or contributing.
+
+Current integration availability and physical-device behavior must be verified in your own environment. Historical project checks are not a promise that every external service works today.
+
+---
+
+Built by [Aman Singh](https://github.com/aman-singh27) · [More work](https://github.com/aman-singh27/aman-singh27/blob/main/PROJECTS.md)

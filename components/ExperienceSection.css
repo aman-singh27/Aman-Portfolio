@@ -1,0 +1,312 @@
+.experience {
+  --experience-copy: #4b4c43;
+  --experience-sage: #e0e7dc;
+  --experience-lilac: #e5e1ef;
+  --experience-peach: #eee0d1;
+  --experience-blue: #e0e6e8;
+  --experience-neutral: #ebe9de;
+  background: var(--paper);
+}
+.experience-heading {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: end;
+  gap: 64px;
+  margin-bottom: 52px;
+}
+.experience-heading h2 {
+  max-width: 750px;
+}
+.experience-heading-copy {
+  max-width: 370px;
+  justify-self: end;
+  padding-bottom: 3px;
+}
+.experience-heading-copy > p {
+  color: var(--experience-copy);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.experience-heading-copy .experience-resume {
+  margin-top: 24px;
+  min-height: 44px;
+  font-size: 13px;
+}
+.experience-resume svg {
+  width: 20px;
+  height: 20px;
+}
+.experience-cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+}
+.experience-position {
+  grid-column: span 2;
+  min-width: 0;
+}
+.experience-position:nth-child(-n + 2) {
+  grid-column: span 3;
+}
+.experience-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  height: 100%;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--experience-neutral);
+}
+.experience-card-rkitect {
+  background: var(--experience-sage);
+}
+.experience-card-guppshupp {
+  background: var(--experience-lilac);
+}
+.experience-card-photobooth {
+  background: var(--experience-peach);
+}
+.experience-card-aman-star {
+  background: var(--experience-blue);
+}
+.experience-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.experience-card-chapter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.experience-card-chapter > span {
+  color: var(--experience-copy);
+  font-variant-numeric: tabular-nums;
+}
+.experience-monogram {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+.experience-card-identity {
+  display: flex;
+  flex-direction: column;
+}
+.experience-position:nth-child(n + 3) .experience-card-identity {
+  min-height: 100px;
+}
+.experience-position:nth-child(n + 3) .experience-role {
+  margin-top: auto;
+  padding-top: 10px;
+}
+.experience-card-identity h3 {
+  font-size: clamp(25px, 2.1vw, 34px);
+  font-weight: 500;
+  line-height: 1.13;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+.experience-position:nth-child(-n + 2) .experience-card-identity h3 {
+  font-size: clamp(32px, 3vw, 46px);
+}
+.experience-organization-detail {
+  font-size: 12px;
+  color: var(--experience-copy);
+  margin-top: 5px;
+}
+.experience-role {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.experience-description {
+  font-size: 14px;
+  color: var(--experience-copy);
+  line-height: 1.7;
+  margin-top: 22px;
+  margin-bottom: 28px;
+  max-width: 61ch;
+}
+.experience-period {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--experience-copy);
+}
+.experience-venture {
+  display: grid;
+  grid-template-columns: auto 0.7fr 1fr;
+  align-items: center;
+  gap: 32px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 18px;
+  padding: 28px 32px;
+  margin-top: 24px;
+}
+.experience-venture-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.experience-venture-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.experience-venture-title {
+  border-left: 1px solid #ffffff35;
+  padding-left: 32px;
+}
+.experience-venture-title h3 {
+  font-size: 28px;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.experience-venture-title > span {
+  display: block;
+  margin-top: 5px;
+  color: #c4c6b8;
+  font-size: 11px;
+}
+.experience-venture > p {
+  font-size: 13px;
+  color: #d2d3c7;
+  max-width: 54ch;
+  line-height: 1.7;
+}
+.experience .learning-grid {
+  margin-top: 52px;
+}
+@media (max-width: 1100px) {
+  .experience-heading {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 32px;
+  }
+  .experience-card {
+    padding: 24px;
+  }
+  .experience-card-chapter {
+    font-size: 9px;
+    gap: 8px;
+  }
+}
+@media (max-width: 900px) {
+  .experience-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .experience-position,
+  .experience-position:nth-child(-n + 2) {
+    grid-column: auto;
+  }
+  .experience-position:last-child {
+    grid-column: 1 / -1;
+  }
+  .experience-position:last-child .experience-description {
+    max-width: 70ch;
+  }
+  .experience-card {
+    min-height: 0;
+  }
+  .experience-venture {
+    grid-template-columns: auto 1fr;
+    gap: 20px 28px;
+    padding: 28px;
+  }
+  .experience-venture-title {
+    padding-left: 28px;
+  }
+  .experience-venture > p {
+    grid-column: 1 / -1;
+    max-width: 70ch;
+  }
+}
+@media (max-width: 760px) {
+  .experience-heading {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .experience-heading-copy {
+    max-width: 500px;
+    justify-self: start;
+  }
+  .experience .learning-grid {
+    margin-top: 36px;
+  }
+}
+@media (max-width: 600px) {
+  .experience-cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .experience-card {
+    padding: 24px;
+    border-radius: 16px;
+  }
+  .experience-card-top {
+    margin-bottom: 26px;
+  }
+  .experience-card-chapter {
+    font-size: 10px;
+  }
+  .experience-card-identity h3,
+  .experience-position:nth-child(-n + 2) .experience-card-identity h3 {
+    font-size: 32px;
+  }
+  .experience-role {
+    font-size: 15px;
+  }
+  .experience-position:nth-child(n + 3) .experience-card-identity {
+    min-height: 0;
+  }
+  .experience-position:nth-child(n + 3) .experience-role {
+    margin-top: 10px;
+    padding-top: 0;
+  }
+  .experience-description {
+    font-size: 15px;
+    margin-top: 18px;
+    margin-bottom: 24px;
+  }
+  .experience-period {
+    font-size: 12px;
+  }
+  .experience-venture {
+    padding: 24px;
+    border-radius: 16px;
+    gap: 20px;
+  }
+  .experience-venture-label {
+    grid-column: 1 / -1;
+  }
+  .experience-venture-title {
+    padding-left: 0;
+    border-left: 0;
+    grid-column: 1 / -1;
+  }
+  .experience-venture > p {
+    font-size: 14px;
+  }
+}
