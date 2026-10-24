@@ -1,0 +1,290 @@
+.scroll-choreographed .hero-globe .globe-lines {
+  animation: none;
+}
+.scroll-choreographed .ticker > div {
+  animation: none;
+}
+.scroll-choreographed .hero-globe {
+  will-change: transform;
+}
+.scroll-choreographed .hero-line {
+  display: block;
+}
+.scroll-choreographed .work-art {
+  transition: none;
+}
+.scroll-desktop .expertise {
+  overflow: hidden;
+  padding-top: 32px;
+  padding-bottom: 36px;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.scroll-desktop .expertise .section-label {
+  margin-bottom: 28px;
+}
+.scroll-desktop .expertise .section-heading {
+  margin-bottom: 34px;
+}
+.scroll-desktop .capability-grid {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  will-change: transform;
+}
+.scroll-desktop .capability {
+  flex: 0 0 clamp(340px, 38vw, 570px);
+  padding: 30px;
+  min-height: 340px;
+}
+.scroll-desktop .capability-top {
+  margin-bottom: 35px;
+}
+.scroll-desktop .capability h3 {
+  font-size: 32px;
+  max-width: 330px;
+  min-height: 0;
+}
+.scroll-desktop .capability > p {
+  font-size: 14px;
+  max-width: 350px;
+}
+.scroll-desktop .capability-symbol {
+  font-size: 60px;
+}
+.scroll-desktop .expertise .section-heading h2 {
+  font-size: clamp(42px, 4.1vw, 65px);
+}
+.scroll-desktop .expertise .tool-tags > span {
+  font-size: 10px;
+}
+.scroll-desktop .about,
+.scroll-desktop .work-section,
+.scroll-desktop .experience,
+.scroll-desktop .process,
+.scroll-desktop .faq,
+.scroll-desktop .contact {
+  position: relative;
+}
+.scroll-choreographed .hero-line-mask {
+  overflow: hidden;
+}
+.scroll-choreographed .contact-title {
+  transform-origin: left center;
+}
+.scroll-choreographed .work-art-button {
+  overflow: hidden;
+}
+.scroll-choreographed .hero-globe svg {
+  transform-style: preserve-3d;
+}
+@media (max-height: 760px) and (min-width: 1000px) {
+  .scroll-desktop .expertise .section-label {
+    margin-bottom: 18px;
+  }
+  .scroll-desktop .expertise .section-heading {
+    margin-bottom: 23px;
+  }
+  .scroll-desktop .expertise .section-heading h2 {
+    font-size: 42px;
+  }
+  .scroll-desktop .capability {
+    min-height: 300px;
+    padding: 25px;
+  }
+  .scroll-desktop .capability-top {
+    margin-bottom: 20px;
+  }
+  .scroll-desktop .capability h3 {
+    font-size: 27px;
+  }
+  .scroll-desktop .capability > p {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  .scroll-desktop .capability-symbol {
+    font-size: 48px;
+  }
+}
+.scroll-desktop .hero {
+  z-index: 0;
+}
+.scroll-desktop .ticker {
+  position: relative;
+  z-index: 2;
+}
+.scroll-desktop .about {
+  z-index: 3;
+  border-radius: 32px 32px 0 0;
+}
+.scroll-desktop .expertise::after {
+  content: attr(data-scroll-step) " / 04  —  SCROLL TO EXPLORE";
+  position: absolute;
+  bottom: 18px;
+  right: 5.5%;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: #b2b3a7;
+}
+.scroll-desktop .expertise::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent, #e6ff57);
+  transform: scaleX(var(--rail-progress, 0));
+  transform-origin: left;
+  pointer-events: none;
+}
+.scroll-choreographed .contact-title:focus-visible {
+  clip-path: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+.scroll-desktop .work-grid {
+  display: block;
+  position: relative;
+}
+.scroll-desktop .work-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  grid-template-rows: auto auto 1fr auto;
+  column-gap: 5%;
+  row-gap: 20px;
+  min-height: min(690px, calc(100svh - 120px));
+  background: var(--paper, #f4f1e8);
+  border: 1px solid #aaa99c;
+  border-radius: 24px;
+  padding: 35px;
+  margin-bottom: 35px;
+  position: relative;
+  isolation: isolate;
+  box-shadow: 0 -10px 35px #11111008;
+}
+.scroll-desktop .work-card:nth-child(2) {
+  z-index: 2;
+}
+.scroll-desktop .work-card:nth-child(3) {
+  z-index: 3;
+}
+.scroll-desktop .work-card:nth-child(4) {
+  z-index: 4;
+}
+.scroll-desktop .work-card:nth-child(5) {
+  z-index: 5;
+}
+.scroll-desktop .work-card:nth-child(6) {
+  z-index: 6;
+}
+.scroll-desktop .work-art-button {
+  grid-column: 2;
+  grid-row: 1/5;
+  border-radius: 14px;
+  align-self: stretch;
+  min-height: 480px;
+}
+.scroll-desktop .work-art {
+  height: 100%;
+  aspect-ratio: auto;
+}
+.scroll-desktop .work-card-meta {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  padding: 8px 0 0;
+}
+.scroll-desktop .work-card-title {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  align-items: flex-start;
+}
+.scroll-desktop .work-card-title h3 {
+  font-family: var(--display, "Anton", Impact, sans-serif);
+  text-transform: uppercase;
+  font-size: clamp(38px, 4.5vw, 72px);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+.scroll-desktop .work-detail-button {
+  flex-shrink: 0;
+}
+.scroll-desktop .work-card-summary {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: center;
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 380px;
+}
+.scroll-desktop .work-tags {
+  grid-column: 1;
+  grid-row: 4;
+  align-self: end;
+}
+.scroll-desktop .work-tags span {
+  font-size: 10px;
+}
+.scroll-desktop .work-art-caption {
+  top: 7%;
+}
+.scroll-desktop .work-art-foot {
+  bottom: 7%;
+}
+.scroll-desktop .work-section-bottom {
+  position: relative;
+  z-index: 7;
+  background: var(--paper, #f4f1e8);
+}
+@media (min-width: 1000px) and (max-height: 760px) {
+  .scroll-desktop .work-card {
+    padding: 25px;
+    min-height: calc(100svh - 105px);
+    row-gap: 14px;
+  }
+  .scroll-desktop .work-art-button {
+    min-height: 400px;
+  }
+  .scroll-desktop .work-card-title h3 {
+    font-size: 45px;
+  }
+  .scroll-desktop .work-card-summary {
+    font-size: 14px;
+  }
+}
+.scroll-desktop .work-card[data-project="splitly"] {
+  background: #dbe7c4;
+}
+.scroll-desktop .work-card[data-project="cleanomatics-workspace"] {
+  background: #e3dcf0;
+}
+.scroll-desktop .work-card[data-project="medvault"] {
+  background: #e1e9e1;
+}
+.scroll-desktop .work-card[data-project="muj-eats"] {
+  background: #ffd1a4;
+}
+.scroll-desktop .work-card[data-project="aman-star"] {
+  background: #dfeba4;
+}
+.scroll-desktop .work-card[data-project="invoice-automation"] {
+  background: #d4c6ed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-choreographed .hero-globe {
+    will-change: auto;
+  }
+}
+.scroll-desktop .work-section {
+  isolation: isolate;
+}
+.scroll-desktop .work-card {
+  background: var(--project-surface, var(--paper, #f4f1e8));
+}
+.scroll-desktop .work-section-bottom {
+  z-index: 100;
+}
