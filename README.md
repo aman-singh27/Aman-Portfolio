@@ -2,6 +2,8 @@
 
 # Aman Singh
 
+[Live portfolio](https://aman-portfolio-silk.vercel.app/) · [Development guide](DEVELOPMENT.md)
+
 My personal portfolio, pairing motion-led storytelling with scoped project case studies and an accessible responsive interface.
 
 **React / TypeScript / GSAP / Vite**
