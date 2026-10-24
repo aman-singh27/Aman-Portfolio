@@ -47,7 +47,7 @@ Splitly is a developer assignment. Its case study describes temporary demo stora
 
 ## Assets
 
-`public/Aman_Singh_Resume.pdf` is the latest verified resume, and `public/favicon.png` is the favicon. `public/robots.txt` is copied into the published output. Files in `public/` keep their names and are available from the site root. The optimized portrait is `src/images/aman-profile.webp`; its PNG source is retained. Imported source assets are processed and fingerprinted by Vite.
+`public/Aman_Singh_Resume.pdf` is the latest verified resume, and `public/favicon.png` is the favicon. `public/robots.txt` is copied into the published output. Files in `public/` keep their names and are available from the site root. The About portrait is `src/images/aman-portrait.jpeg`, supplied by Aman for this section. Imported source assets are processed and fingerprinted by Vite.
 
 Anton and DM Sans Latin WOFF2 assets are stored in `public/fonts/`, with their source metadata and SIL Open Font License notices. Use local font faces and system-font fallbacks; see `public/fonts/README.md`. Concept project visuals are built from HTML/CSS/SVG. Older components and generated images remain in the repository but are not imported by the current page; review references before removing them or their dependencies.
 

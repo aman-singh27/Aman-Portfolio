@@ -7,7 +7,7 @@ import {
   capabilities,
   profile,
 } from "./data/portfolio";
-import portrait from "./src/images/aman-profile.webp";
+import portrait from "./src/images/aman-portrait.jpeg";
 
 const navigation = [
   ["Work", "#work"],
@@ -434,8 +434,8 @@ function App() {
                 <img
                   src={portrait}
                   alt="Aman Singh, full-stack developer and automation engineer"
-                  width="633"
-                  height="836"
+                  width="512"
+                  height="497"
                   loading="lazy"
                 />
                 <Star className="portrait-star" />
